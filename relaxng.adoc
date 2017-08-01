@@ -1,0 +1,15 @@
+= RelaxNG Tutorial
+Patrick Gundlach <gundlach@speedata.de>
+v0.1, 2017-08-01
+:icons: font
+:sectnums:
+:toc: left
+:lang: de
+:figure-caption: Abbildung
+:toc-title: Inhalt
+:source-highlighter: highlightjs
+
+
+include::ersteschritte.adoc[]
+
+
