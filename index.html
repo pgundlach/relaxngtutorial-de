@@ -26,6 +26,7 @@
 <li><a href="#_attribute">2. Attribute</a></li>
 <li><a href="#_optionale_elemente_und_attribute">3. Optionale Elemente und Attribute</a></li>
 <li><a href="#_auswahl_choice">4. Auswahl (Choice)</a></li>
+<li><a href="#_benannte_muster">5. Benannte Muster</a></li>
 </ul>
 </div>
 </div>
@@ -492,11 +493,128 @@ Erinnerung: das zweite Beispiel oben ist erlaubt, weil ja bei den Attributen die
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_benannte_muster">5. Benannte Muster</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Für alle größeren Schemadateien ist es vorteilhaft, wenn man das Schema in einzelne Teile gliedert. Mit <code>define</code> kann man einen einzelnen Abschnitt definieren und einen Namen zuweisen, auf dem man später mit <code>ref</code> verweisen kann.
+Eine solche Definition sieht so aus:</p>
+</div>
+<code class="sidebar">
+define
+</code>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;define name="cardContent"&gt;
+  &lt;element name="name"&gt;
+    &lt;text/&gt;
+  &lt;/element&gt;
+  &lt;element name="email"&gt;
+    &lt;text/&gt;
+  &lt;/element&gt;
+&lt;/define&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>da nun aber bei mehreren Auftreten einer solchen Definition unklar ist, wo das Schema »anfängt«, muss eine andere Struktur her.
+Das Grundgerüst ist nun folgendes:</p>
+</div>
+<code class="sidebar">
+grammer<br>
+start
+</code>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;grammar xmlns="http://relaxng.org/ns/structure/1.0"&gt;
+  &lt;start&gt;
+    &lt;element name="wurzelelement"&gt;
+      ...
+    &lt;/element&gt;
+  &lt;/start&gt;
+&lt;/grammar&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Jetzt kann das Schema in Teile zerlegt werden:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;grammar xmlns="http://relaxng.org/ns/structure/1.0"&gt;
+  &lt;start&gt;
+    &lt;element name="addressBook"&gt;
+      &lt;zeroOrMore&gt;
+        &lt;element name="card"&gt;
+          &lt;ref name="cardContent"/&gt;
+        &lt;/element&gt;
+      &lt;/zeroOrMore&gt;
+    &lt;/element&gt;
+  &lt;/start&gt;
+
+  &lt;define name="cardContent"&gt;
+    &lt;element name="name"&gt;&lt;text /&gt;&lt;/element&gt;
+    &lt;element name="email"&gt;&lt;text /&gt;&lt;/element&gt;
+  &lt;/define&gt;
+&lt;/grammar&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Man kann das auch noch weiter treiben, in dem man die beiden Elemente aus <code>card</code> auch noch aufteilt:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;!-- der Rahmen wie oben --&gt;
+  &lt;define name="cardContent"&gt;
+    &lt;ref name="namecontent"/&gt;
+    &lt;ref name="emailcontent"/&gt;
+  &lt;/define&gt;
+
+  &lt;define name="namecontent"&gt;
+    &lt;element name="name"&gt;
+      &lt;text /&gt;
+    &lt;/element&gt;
+  &lt;/define&gt;
+
+  &lt;define name="emailcontent"&gt;
+    &lt;element name="email"&gt;
+      &lt;text /&gt;
+    &lt;/element&gt;
+  &lt;/define&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Die Reihenfolge der Definitionen ist beliebig. Die Referenzen dürfen sich auch selbst aufrufen:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">  &lt;define name="inline"&gt;
+    &lt;choice&gt;
+      &lt;text/&gt;
+      &lt;element name="bold"&gt;
+        &lt;ref name="inline"/&gt;
+      &lt;/element&gt;
+      &lt;element name="italic"&gt;
+        &lt;ref name="inline"/&gt;
+      &lt;/element&gt;
+      &lt;element name="span"&gt;
+        &lt;optional&gt;
+          &lt;attribute name="style"/&gt;
+        &lt;/optional&gt;
+        &lt;ref name="inline"/&gt;
+      &lt;/element&gt;
+    &lt;/choice&gt;
+  &lt;/define&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Die Elemente <code>bold</code>, <code>italic</code> und <code>span</code> dürfen entweder Text enthalten oder eines der Elemente <code>bold</code>, <code>italic</code> oder <code>span</code>, und das mit beliebiger Schachtelungstiefe.</p>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 0.1<br>
-Last updated 2017-08-02 13:49:00 CEST
+Last updated 2017-08-02 14:08:04 CEST
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/github.min.css">

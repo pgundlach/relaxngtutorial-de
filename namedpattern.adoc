@@ -1,0 +1,116 @@
+// https://creativecommons.org/licenses/by-sa/3.0/deed.de
+== Benannte Muster ==
+
+Für alle größeren Schemadateien ist es vorteilhaft, wenn man das Schema in einzelne Teile gliedert. Mit `define` kann man einen einzelnen Abschnitt definieren und einen Namen zuweisen, auf dem man später mit `ref` verweisen kann.
+Eine solche Definition sieht so aus:
+
+++++
+<code class="sidebar">
+define
+</code>
+++++
+[source, xml]
+-------------------------------------------------------------------------------
+<define name="cardContent">
+  <element name="name">
+    <text/>
+  </element>
+  <element name="email">
+    <text/>
+  </element>
+</define>
+-------------------------------------------------------------------------------
+
+da nun aber bei mehreren Auftreten einer solchen Definition unklar ist, wo das Schema »anfängt«, muss eine andere Struktur her.
+Das Grundgerüst ist nun folgendes:
+
+++++
+<code class="sidebar">
+grammer<br>
+start
+</code>
+++++
+[source, xml]
+-------------------------------------------------------------------------------
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+  <start>
+    <element name="wurzelelement">
+      ...
+    </element>
+  </start>
+</grammar>
+-------------------------------------------------------------------------------
+
+
+Jetzt kann das Schema in Teile zerlegt werden:
+
+[source, xml]
+-------------------------------------------------------------------------------
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+  <start>
+    <element name="addressBook">
+      <zeroOrMore>
+        <element name="card">
+          <ref name="cardContent"/>
+        </element>
+      </zeroOrMore>
+    </element>
+  </start>
+
+  <define name="cardContent">
+    <element name="name"><text /></element>
+    <element name="email"><text /></element>
+  </define>
+</grammar>
+-------------------------------------------------------------------------------
+
+Man kann das auch noch weiter treiben, in dem man die beiden Elemente aus `card` auch noch aufteilt:
+
+
+[source, xml]
+-------------------------------------------------------------------------------
+<!-- der Rahmen wie oben -->
+  <define name="cardContent">
+    <ref name="namecontent"/>
+    <ref name="emailcontent"/>
+  </define>
+
+  <define name="namecontent">
+    <element name="name">
+      <text />
+    </element>
+  </define>
+
+  <define name="emailcontent">
+    <element name="email">
+      <text />
+    </element>
+  </define>
+-------------------------------------------------------------------------------
+
+Die Reihenfolge der Definitionen ist beliebig. Die Referenzen dürfen sich auch selbst aufrufen:
+
+[source, xml]
+-------------------------------------------------------------------------------
+  <define name="inline">
+    <choice>
+      <text/>
+      <element name="bold">
+        <ref name="inline"/>
+      </element>
+      <element name="italic">
+        <ref name="inline"/>
+      </element>
+      <element name="span">
+        <optional>
+          <attribute name="style"/>
+        </optional>
+        <ref name="inline"/>
+      </element>
+    </choice>
+  </define>
+-------------------------------------------------------------------------------
+
+Die Elemente `bold`, `italic` und `span` dürfen entweder Text enthalten oder eines der Elemente `bold`, `italic` oder `span`, und das mit beliebiger Schachtelungstiefe.
+
+// Ende der Datei
