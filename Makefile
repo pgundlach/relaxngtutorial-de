@@ -1,4 +1,4 @@
 
-
 html:
-	asciidoctor relaxng.adoc
+	asciidoctor relaxng.adoc -o index.html
+

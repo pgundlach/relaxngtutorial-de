@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.5">
+<meta name="author" content="Patrick Gundlach">
+<title>RelaxNG Tutorial</title>
+<link rel="stylesheet" href="css/relaxng.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+</head>
+<body class="article">
+<div id="header">
+<h1>RelaxNG Tutorial</h1>
+<div class="details">
+<span id="author" class="author">Patrick Gundlach</span><br>
+<span id="email" class="email"><a href="mailto:gundlach@speedata.de">gundlach@speedata.de</a></span><br>
+<span id="revnumber">version 0.1,</span>
+<span id="revdate">2017-08-02</span>
+</div>
+<div id="toc" class="toc">
+<div id="toctitle">Inhalt</div>
+<ul class="sectlevel1">
+<li><a href="#_los_geht_s">1. Los geht&#8217;s</a></li>
+<li><a href="#_attribute">2. Attribute</a></li>
+<li><a href="#_optionale_elemente_und_attribute">3. Optionale Elemente und Attribute</a></li>
+<li><a href="#_auswahl_choice">4. Auswahl (Choice)</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<h2 id="_vorwort" class="discrete">Vorwort</h2>
+<div class="paragraph foo">
+<p>RelaxNG (gesprochen: relaxing) ist eine Schemasprache für XML, mit der man den Aufbau eines XML-Dokuments beschreiben kann.
+Hat man ein solches Schema erstellt, dann kann man leicht überprüfen, ob ein XML-Dokument den Anforderungen entspricht.
+Beispielsweise kann man in einem Schema festlegen, dass ein Adressbucheintrag genau einen Vornamen und einen Nachnamen enthalten muss.
+Das hat zwei Vorteile:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Der Anwender kann prüfen, ob das XML-Dokument den Anforderungen entspricht (Validierung)</p>
+</li>
+<li>
+<p>Mit einem passenden Editor kann sich per Autovervollständigung Vorschläge für die Eingabe geben lassen und spart Tipparbeit und Fehler</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Die Schemasprache RelaxNG eignet sich sehr gut für diese Aufgabe und wird von vielen XML-Editoren unterstützt.
+RelaxNG kommt in zwei Arten daher, die funktional identisch sind.
+Einmal als »kompakte Syntax« und einmal als »XML-Syntax«. In diesem Dokument wird nur die XML-Syntax beschrieben.</p>
+</div>
+<div class="paragraph">
+<p>Dieses Tutorial lehnt sich an das »offizielle« Tutorial an, das auf der <a href="http://relaxng.org/tutorial-20030326.html">RelaxNG-Webseite zur Verfügung steht</a>.
+Es ist keine direkte Übersetzung.
+Hier und da wurden Änderungen vorgenommen, um den Inhalt leichter zu vermitteln.
+Hinweise auf nicht mehr übliche Techniken wurden entfernt (TREX, DTD, &#8230;&#8203;)</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Neu eingeführte Elemente werden im linken Rand dargestellt. Damit kannst du das Tutorial auch »überfliegen«, wenn du nach einem bestimmten Befehl suchst. Das funktioniert leider nur, wenn der Bildschirm groß genug ist&#8230;&#8203;
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_los_geht_s">1. Los geht&#8217;s</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Als Beispiel für das Tutorial (bzw. die ersten Schritte) soll folgende XML-Datei dienen, für die ein Schema erstellt werden soll (speichern z.B. unter <code>source.xml</code>):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;addressBook&gt;
+  &lt;card&gt;
+    &lt;name&gt;John Smith&lt;/name&gt;
+    &lt;email&gt;js@example.com&lt;/email&gt;
+  &lt;/card&gt;
+  &lt;card&gt;
+    &lt;name&gt;Fred Bloggs&lt;/name&gt;
+    &lt;email&gt;fb@example.net&lt;/email&gt;
+  &lt;/card&gt;
+&lt;/addressBook&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Das dazugehörige Schema könnte wie folgt aussehen (speichern z.B. unter <code>schema.rng</code>):</p>
+</div>
+<code class="sidebar">
+element<br>
+zeroOrMore<br>
+text
+</code>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;element name="addressBook" xmlns="http://relaxng.org/ns/structure/1.0"&gt;
+  &lt;zeroOrMore&gt;
+    &lt;element name="card"&gt;
+      &lt;element name="name"&gt;
+        &lt;text/&gt;
+      &lt;/element&gt;
+      &lt;element name="email"&gt;
+        &lt;text/&gt;
+      &lt;/element&gt;
+    &lt;/element&gt;
+  &lt;/zeroOrMore&gt;
+&lt;/element&gt;</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Es ist schwierig ein Schema aus einer XML-Datei zu erzeugen, wenn nicht genügend Informationen über die Datei bekannt sind. Ist das Feld <code>email</code> zwingend notwendig? Dürfen noch weitere Elemente hinzukommen? Ohne die Antworten zu kennen, ist das dazugehörige Schema möglicherweise unvollständig. Das soll im Tutorial aber nicht weiter stören, da wir uns nur die Schemasprache anschauen.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Die Validierung des Dokuments wird meist in einem XML-Editor durchgeführt (z.B. oXygen XML), in der Regel auch während der Eingabe.
+Man kann mit dem Programm <a href="http://www.thaiopensource.com/relaxng/jing.html">Jing</a> auch auf der Kommandozeile validieren, das ist aber natürlich etwas umständlicher, für automatisierte Workflows aber extrem praktisch:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-sh" data-lang="sh">java -jar jing.jar schema.rng source.xml</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Passt die XML-Datei zum Schema, so gibt es keine Ausgabe und der Rückgabewert des Programms ist 0.
+Andernfalls wird eine Fehlermeldung ausgegeben.</p>
+</div>
+<div class="paragraph">
+<p>Das oben gezeigte Schema erwartet als Wurzelelement ein Element mit dem Namen <code>addressBook</code> mit 0 oder mehreren Kindelementen <code>card</code>, die wiederum zwei Elemente (<code>name</code> und <code>email</code>) in dieser Reihenfolge enthalten. Beide Kindelemente müssen vorhanden sein und enthalten beliebigen Text, der auch leer sein kann. Mit etwas Geduld kann man das ganz gut aus dem Schema ablesen.</p>
+</div>
+<code class="sidebar">
+oneOrMore</code>
+<div class="paragraph">
+<p>Möchte man z.B. dass <code>addressBook</code> mindestens ein Element <code>card</code> enthält, dann ersetzt man <code>zeroOrMore</code> durch <code>oneOrMore</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;element name="addressBook" xmlns="http://relaxng.org/ns/structure/1.0"&gt;
+  &lt;oneOrMore&gt;
+    &lt;element name="card"&gt;
+      &lt;element name="name"&gt;
+        &lt;text/&gt;
+      &lt;/element&gt;
+      &lt;element name="email"&gt;
+        &lt;text/&gt;
+      &lt;/element&gt;
+    &lt;/element&gt;
+  &lt;/oneOrMore&gt;
+&lt;/element&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_attribute">2. Attribute</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Falls anstelle von Elementen Attribute gewünscht sind, kann man das einfach erreichen. Dazu passt man das Schema an und ersetzt quasi die <code>&lt;element ..&gt;</code> durch <code>&lt;attribute ..&gt;</code>:</p>
+</div>
+<code class="sidebar">
+attribute
+</code>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;element name="addressBook" xmlns="http://relaxng.org/ns/structure/1.0"&gt;
+  &lt;zeroOrMore&gt;
+    &lt;element name="card"&gt;
+      &lt;attribute name="name" /&gt;
+      &lt;attribute name="email" /&gt;
+    &lt;/element&gt;
+  &lt;/zeroOrMore&gt;
+&lt;/element&gt;</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Da die Reihenfolge der Attribute in XML nicht wichtig ist, können sie bei RelaxNG auch in beliebiger Reihenfolge festgelegt werden. Bei Elementen hingegen ist die Reihenfolge wesentlich.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Es gibt einen Unterschied zwischen den Mustern für Attribute und Elemente. Die Voreinstellung für den Inhalt von Attributen ist <code>&lt;text /&gt;</code>. Daraus folgt, dass</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;attribute name="email"/&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>die Kurzform für</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;attribute name="email"&gt;
+  &lt;text/&gt;
+&lt;/attribute&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>ist. Für Elemente hingegen gibt es keine Voreinstellung.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;!-- nicht erlaubt! --&gt;
+&lt;element name="email"/&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Leere Elemente müssen explizit als solche gekennzeichnet sein.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;!-- aber das hier ist erlaubt --&gt;
+&lt;element name="email"&gt;
+  &lt;empty /&gt;
+&lt;/element&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Ist hingegen ein Attribut erlaubt, ist das <code>&lt;empty /&gt;</code> nicht notwendig, wird aber implizit angenommen:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;element name="card"&gt;
+  &lt;attribute name="email" /&gt;
+&lt;/element&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>ist dasselbe wie</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;element name="card"&gt;
+  &lt;attribute name="email" /&gt;
+  &lt;empty/&gt;
+&lt;/element&gt;</code></pre>
+</div>
+</div>
+<h3 id="_namensraum" class="discrete">Namensraum</h3>
+<div class="paragraph">
+<p>Der Namensraum von RelaxNG ist <code>http://relaxng.org/ns/structure/1.0</code>. Mit dem »Attribut«</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">xmlns="http://relaxng.org/ns/structure/1.0"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>wird dieser Namensraum als Voreinstellung für alle (Kind-)Elemente genommen. Man kann jedoch genau so gut einen Präfix nutzen:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">xmlns:rng="http://relaxng.org/ns/structure/1.0"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>dann müssen alle Elemente dieses Präfix benutzen:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;rng:element name="addressBook" xmlns:rng="http://relaxng.org/ns/structure/1.0"&gt;
+  &lt;rng:zeroOrMore&gt;
+    &lt;rng:element name="card"&gt;
+      &lt;rng:element name="name"&gt;
+        &lt;rng:text/&gt;
+      &lt;/rng:element&gt;
+      &lt;rng:element name="email"&gt;
+        &lt;rng:text/&gt;
+      &lt;/rng:element&gt;
+    &lt;/rng:element&gt;
+  &lt;/rng:zeroOrMore&gt;
+&lt;/rng:element&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_optionale_elemente_und_attribute">3. Optionale Elemente und Attribute</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Möchte man ein optionales Element hinzufügen, macht man das wie folgt:</p>
+</div>
+<code class="sidebar">
+optional</code>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;element name="addressBook" xmlns="http://relaxng.org/ns/structure/1.0"&gt;
+  &lt;zeroOrMore&gt;
+    &lt;element name="card"&gt;
+      &lt;element name="name"&gt;
+        &lt;text/&gt;
+      &lt;/element&gt;
+      &lt;element name="email"&gt;
+        &lt;text/&gt;
+      &lt;/element&gt;
+      &lt;optional&gt;
+        &lt;element name="note"&gt;
+          &lt;text/&gt;
+        &lt;/element&gt;
+      &lt;/optional&gt;
+    &lt;/element&gt;
+  &lt;/zeroOrMore&gt;
+&lt;/element&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Das Element <code>note</code> ist nun als Kind von <code>card</code> erlaubt, muss aber nicht angegeben werden. (Dasselbe funktioniert auch bei Attributen, siehe weiter unten).</p>
+</div>
+<div class="paragraph">
+<p>Genauso funktioniert dies mit Attributen:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;element name="addressBook" xmlns="http://relaxng.org/ns/structure/1.0"&gt;
+  &lt;zeroOrMore&gt;
+    &lt;element name="card"&gt;
+      &lt;attribute name="name"/&gt;
+      &lt;attribute name="email"/&gt;
+      &lt;optional&gt;
+        &lt;attribute name="note" /&gt;
+      &lt;/optional&gt;
+    &lt;/element&gt;
+  &lt;/zeroOrMore&gt;
+&lt;/element&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Das Attribut <code>note</code> kann angegeben werden.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_auswahl_choice">4. Auswahl (Choice)</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Mit dem Element <code>choice</code> kann man ein »Entweder/Oder«-Konstrukt erzeugen.
+Wenn das Adressbuch beispielsweise entweder das Element <code>name</code> oder die beiden Elemente <code>givenName</code> und <code>familyName</code> haben soll, nutzt man <code>choice</code>. Die gewünschte XML-Datei ist folgende:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;addressBook&gt;
+  &lt;card&gt;
+    &lt;givenName&gt;John&lt;/givenName&gt;
+    &lt;familyName&gt;Smith&lt;/familyName&gt;
+    &lt;email&gt;js@example.com&lt;/email&gt;
+  &lt;/card&gt;
+  &lt;card&gt;
+    &lt;name&gt;Fred Bloggs&lt;/name&gt;
+    &lt;email&gt;fb@example.net&lt;/email&gt;
+  &lt;/card&gt;
+&lt;/addressBook&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Dazu passt diese Schemadatei.</p>
+</div>
+<code class="sidebar">
+choice<br>
+group
+</code>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;element name="addressBook" xmlns="http://relaxng.org/ns/structure/1.0"&gt;
+  &lt;zeroOrMore&gt;
+    &lt;element name="card"&gt;
+      &lt;choice&gt;
+        &lt;element name="name"&gt;
+          &lt;text/&gt;
+        &lt;/element&gt;
+        &lt;group&gt;
+          &lt;element name="givenName"&gt;
+            &lt;text/&gt;
+          &lt;/element&gt;
+          &lt;element name="familyName"&gt;
+            &lt;text/&gt;
+          &lt;/element&gt;
+        &lt;/group&gt;
+      &lt;/choice&gt;
+      &lt;element name="email"&gt;
+        &lt;text/&gt;
+      &lt;/element&gt;
+    &lt;/element&gt;
+  &lt;/zeroOrMore&gt;
+&lt;/element&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Das Element <code>group</code> hier ist notwendig, sonst wäre die Aussage »entweder <code>name</code> oder <code>givenName</code> oder <code>familyName</code>«. Dasselbe funktioniert auch für Attribute:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;element name="addressBook" xmlns="http://relaxng.org/ns/structure/1.0"&gt;
+  &lt;zeroOrMore&gt;
+    &lt;element name="card"&gt;
+      &lt;choice&gt;
+        &lt;attribute name="name" /&gt;
+        &lt;group&gt;
+          &lt;attribute name="givenName" /&gt;
+          &lt;attribute name="familyName" /&gt;
+        &lt;/group&gt;
+      &lt;/choice&gt;
+      &lt;attribute name="email"&gt;
+        &lt;text/&gt;
+      &lt;/attribute&gt;
+    &lt;/element&gt;
+  &lt;/zeroOrMore&gt;
+&lt;/element&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Dasselbe geht auch für die Kombination von Elementen und Attribute.
+Wenn man z.B. »entweder Element oder Attribut« beschreiben möchte.
+Im nächsten Beispiel kann man entweder das Attribut oder das Element benutzen, und zwar für jedes der beiden Felder <code>name</code> und <code>email</code> separat.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;element name="addressBook" xmlns="http://relaxng.org/ns/structure/1.0"&gt;
+  &lt;zeroOrMore&gt;
+    &lt;element name="card"&gt;
+
+      &lt;choice&gt;
+        &lt;element name="name"&gt;
+          &lt;text/&gt;
+        &lt;/element&gt;
+        &lt;attribute name="name"&gt;
+          &lt;text/&gt;
+        &lt;/attribute&gt;
+      &lt;/choice&gt;
+
+      &lt;choice&gt;
+        &lt;element name="email"&gt;
+          &lt;text/&gt;
+        &lt;/element&gt;
+        &lt;attribute name="email"&gt;
+          &lt;text/&gt;
+        &lt;/attribute&gt;
+      &lt;/choice&gt;
+
+    &lt;/element&gt;
+  &lt;/zeroOrMore&gt;
+&lt;/element&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Folgende XML-Dokumente passen auf dieses Schema:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;card name="John Smith" email="js@example.com"/&gt;
+&lt;card email="js@example.com" name="John Smith"/&gt;
+&lt;card email="js@example.com"&gt;&lt;name&gt;John Smith&lt;/name&gt;&lt;/card&gt;
+&lt;card name="John Smith"&gt;&lt;email&gt;js@example.com&lt;/email&gt;&lt;/card&gt;
+&lt;card&gt;&lt;name&gt;John Smith&lt;/name&gt;&lt;email&gt;js@example.com&lt;/email&gt;&lt;/card&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Aber nicht auf:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;card&gt;&lt;email&gt;js@example.com&lt;/email&gt;&lt;name&gt;John Smith&lt;/name&gt;&lt;/card&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>weil das Element <code>email</code> nicht vor dem Element <code>name</code> auftreten darf.
+Erinnerung: das zweite Beispiel oben ist erlaubt, weil ja bei den Attributen die Reihenfolge unwichtig ist.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 0.1<br>
+Last updated 2017-08-02 13:49:00 CEST
+</div>
+</div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/github.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script>
+<script>hljs.initHighlighting()</script>
+</body>
+</html>

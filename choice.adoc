@@ -1,0 +1,135 @@
+// https://creativecommons.org/licenses/by-sa/3.0/deed.de
+== Auswahl (Choice) ==
+
+Mit dem Element `choice` kann man ein »Entweder/Oder«-Konstrukt erzeugen.
+Wenn das Adressbuch beispielsweise entweder das Element `name` oder die beiden Elemente `givenName` und `familyName` haben soll, nutzt man `choice`. Die gewünschte XML-Datei ist folgende:
+
+[source, xml]
+-------------------------------------------------------------------------------
+<addressBook>
+  <card>
+    <givenName>John</givenName>
+    <familyName>Smith</familyName>
+    <email>js@example.com</email>
+  </card>
+  <card>
+    <name>Fred Bloggs</name>
+    <email>fb@example.net</email>
+  </card>
+</addressBook>
+-------------------------------------------------------------------------------
+
+Dazu passt diese Schemadatei.
+
+++++
+<code class="sidebar">
+choice<br>
+group
+</code>
+++++
+[source, xml]
+-------------------------------------------------------------------------------
+<element name="addressBook" xmlns="http://relaxng.org/ns/structure/1.0">
+  <zeroOrMore>
+    <element name="card">
+      <choice>
+        <element name="name">
+          <text/>
+        </element>
+        <group>
+          <element name="givenName">
+            <text/>
+          </element>
+          <element name="familyName">
+            <text/>
+          </element>
+        </group>
+      </choice>
+      <element name="email">
+        <text/>
+      </element>
+    </element>
+  </zeroOrMore>
+</element>
+-------------------------------------------------------------------------------
+
+Das Element `group` hier ist notwendig, sonst wäre die Aussage »entweder `name` oder `givenName` oder `familyName`«. Dasselbe funktioniert auch für Attribute:
+
+
+[source, xml]
+-------------------------------------------------------------------------------
+<element name="addressBook" xmlns="http://relaxng.org/ns/structure/1.0">
+  <zeroOrMore>
+    <element name="card">
+      <choice>
+        <attribute name="name" />
+        <group>
+          <attribute name="givenName" />
+          <attribute name="familyName" />
+        </group>
+      </choice>
+      <attribute name="email">
+        <text/>
+      </attribute>
+    </element>
+  </zeroOrMore>
+</element>
+-------------------------------------------------------------------------------
+
+Dasselbe geht auch für die Kombination von Elementen und Attribute.
+Wenn man z.B. »entweder Element oder Attribut« beschreiben möchte.
+Im nächsten Beispiel kann man entweder das Attribut oder das Element benutzen, und zwar für jedes der beiden Felder `name` und `email` separat.
+
+
+
+[source, xml]
+-------------------------------------------------------------------------------
+<element name="addressBook" xmlns="http://relaxng.org/ns/structure/1.0">
+  <zeroOrMore>
+    <element name="card">
+
+      <choice>
+        <element name="name">
+          <text/>
+        </element>
+        <attribute name="name">
+          <text/>
+        </attribute>
+      </choice>
+
+      <choice>
+        <element name="email">
+          <text/>
+        </element>
+        <attribute name="email">
+          <text/>
+        </attribute>
+      </choice>
+
+    </element>
+  </zeroOrMore>
+</element>
+-------------------------------------------------------------------------------
+
+Folgende XML-Dokumente passen auf dieses Schema:
+
+[source, xml]
+-------------------------------------------------------------------------------
+<card name="John Smith" email="js@example.com"/>
+<card email="js@example.com" name="John Smith"/>
+<card email="js@example.com"><name>John Smith</name></card>
+<card name="John Smith"><email>js@example.com</email></card>
+<card><name>John Smith</name><email>js@example.com</email></card>
+-------------------------------------------------------------------------------
+
+Aber nicht auf:
+
+[source, xml]
+-------------------------------------------------------------------------------
+<card><email>js@example.com</email><name>John Smith</name></card>
+-------------------------------------------------------------------------------
+
+weil das Element `email` nicht vor dem Element `name` auftreten darf.
+Erinnerung: das zweite Beispiel oben ist erlaubt, weil ja bei den Attributen die Reihenfolge unwichtig ist.
+
+// Ende der Datei
