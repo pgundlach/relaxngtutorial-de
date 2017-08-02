@@ -1,0 +1,101 @@
+:builtindatatypes: https://www.w3.org/TR/xmlschema-2/#built-in-datatypes
+
+== Datentypen ==
+
+In den letzten Beispielen gab es als einzigen Datentyp »text«, der alles beinhaltet.
+Manchmal ist es jedoch wünschenswert, nur bestimmte Werte zuzulassen, beispielsweise für das Geburtsjahr.
+Der Anwender soll genau vier Ziffern in das Feld schreiben dürfen, die ggf. noch innerhalb eines Wertebereiches liegen.
+
+RelaxNG selber kennt keine Datentypen, kann aber »externe« Datentypen einbinden.
+Die wohl am häufigsten benutzte Sammlung an Datentypen hat den URI `\http://www.w3.org/2001/XMLSchema-datatypes`. Dieser Identifier wird im Attribut `datatypeLibrary` angegeben, das man am einfachsten am Wurzelelement mit angibt:
+
+
+++++
+<code class="sidebar">
+datatypeLibrary
+</code>
+++++
+[source, xml]
+-------------------------------------------------------------------------------
+<grammar
+  xmlns="http://relaxng.org/ns/structure/1.0"
+  datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+  <start>
+     ...
+  </start>
+</grammar>
+-------------------------------------------------------------------------------
+
+bzw.
+
+
+[source, xml]
+-------------------------------------------------------------------------------
+<element xmlns="http://relaxng.org/ns/structure/1.0"
+  datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
+  name="addressBook">
+  ...
+</element>
+-------------------------------------------------------------------------------
+
+Möchte man ein Element einschränken auf einen bestimmten Wert, kann man das mit dem Muster `data` erreichen:
+
+
+++++
+<code class="sidebar">
+data
+</code>
+++++
+[source, xml]
+-------------------------------------------------------------------------------
+<element name="year">
+  <data type="gYear"/>
+</element>
+-------------------------------------------------------------------------------
+
+Das erlaubt nur Eingaben, die dem Muster `gYear` entsprechen.
+Die Beschreibung der eingebauten Typen ist unter `{builtindatatypes}` zu finden.
+
+// Zur Erinnerung: möchte man die Werte einschränken, muss im Dokument die `datatypeLibrary` festgelegt werden.
+
+Nicht erlaubt ist es, verschiedene Datentypen in einem Element zu benutzen.
+
+[source, xml]
+-------------------------------------------------------------------------------
+<!-- nicht erlaubt! -->
+<element name="year">
+  <data type="gYear"/>
+  <element name="note">
+    <text/>
+  </element>
+</element>
+-------------------------------------------------------------------------------
+
+Datentypen können Parameter (Einschränkungen) haben. So sind für den Datentyp https://www.w3.org/TR/xmlschema-2/#string[`string`] die folgenden Einschränkungen möglich:
+
+* `length`
+* `minLength`
+* `maxLength`
+* `pattern`
+
+Die beiden Parameter `enumeration` und `whiteSpace` sind laut den http://relaxng.org/xsd-20010907.html[Richtlinien für Datentypen in RelaxNG] nicht erlaubt.
+
+Diese Parameter werden als Kindelement von `data` angegeben
+
+++++
+<code class="sidebar">
+param
+</code>
+++++
+[source, xml]
+-------------------------------------------------------------------------------
+<element name="email">
+  <data type="string">
+    <param name="minLength">6</param>
+    <param name="maxLength">127</param>
+  </data>
+</element>
+-------------------------------------------------------------------------------
+
+
+// Ende der Datei

@@ -1,3 +1,4 @@
+// https://creativecommons.org/licenses/by-sa/3.0/deed.de
 
 == Los geht's ==
 
@@ -62,7 +63,7 @@ Passt die XML-Datei zum Schema, so gibt es keine Ausgabe und der Rückgabewert d
 Andernfalls wird eine Fehlermeldung ausgegeben.
 
 
-Das oben gezeigte Schema erwartet als Wurzelelement ein Element mit dem Namen `addressBook` mit 0 oder mehreren Kindelementen `card`, die wiederum zwei Elemente (`name` und `email`) in dieser Reihenfolge enthalten. Beide Kindelemente müssen vorhanden sein und enthalten beliebigen Text, der auch leer sein kann. Mit etwas Geduld kann man das ganz gut aus dem Schema ablesen.
+Das oben gezeigte Schema erwartet als Wurzelelement ein Element mit dem Namen `addressBook` mit keinem oder mehreren Kindelementen `card`, die wiederum zwei Elemente (`name` und `email`) in dieser Reihenfolge enthalten. Beide Kindelemente müssen vorhanden sein und enthalten beliebigen Text, der auch leer sein kann. Mit etwas Geduld kann man das ganz gut aus dem Schema ablesen.
 
 ++++
 <code class="sidebar">

@@ -76,8 +76,7 @@ Das Element `group` hier ist notwendig, sonst wäre die Aussage »entweder `name
 </element>
 -------------------------------------------------------------------------------
 
-Dasselbe geht auch für die Kombination von Elementen und Attribute.
-Wenn man z.B. »entweder Element oder Attribut« beschreiben möchte.
+Choice kann man auch für Kombinationen von Elementen und Attribute nutzen, wenn man z.B. »entweder Element oder Attribut« beschreiben möchte.
 Im nächsten Beispiel kann man entweder das Attribut oder das Element benutzen, und zwar für jedes der beiden Felder `name` und `email` separat.
 
 
@@ -111,7 +110,7 @@ Im nächsten Beispiel kann man entweder das Attribut oder das Element benutzen, 
 </element>
 -------------------------------------------------------------------------------
 
-Folgende XML-Dokumente passen auf dieses Schema:
+Dieses Schema passt auf folgende XML-Dokumente:
 
 [source, xml]
 -------------------------------------------------------------------------------

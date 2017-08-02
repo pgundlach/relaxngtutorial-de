@@ -21,7 +21,7 @@ define
 </define>
 -------------------------------------------------------------------------------
 
-da nun aber bei mehreren Auftreten einer solchen Definition unklar ist, wo das Schema »anfängt«, muss eine andere Struktur her.
+da nun aber bei mehreren solchen Definition unklar ist, wo das Schema »anfängt«, muss eine andere Struktur her.
 Das Grundgerüst ist nun folgendes:
 
 ++++
@@ -42,8 +42,13 @@ start
 -------------------------------------------------------------------------------
 
 
-Jetzt kann das Schema in Teile zerlegt werden:
+Jetzt kann das bekannte Schema in Teile zerlegt werden:
 
+++++
+<code class="sidebar">
+ref
+</code>
+++++
 [source, xml]
 -------------------------------------------------------------------------------
 <grammar xmlns="http://relaxng.org/ns/structure/1.0">

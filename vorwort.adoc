@@ -9,8 +9,8 @@ Hat man ein solches Schema erstellt, dann kann man leicht überprüfen, ob ein X
 Beispielsweise kann man in einem Schema festlegen, dass ein Adressbucheintrag genau einen Vornamen und einen Nachnamen enthalten muss.
 Das hat zwei Vorteile:
 
-. Der Anwender kann prüfen, ob das XML-Dokument den Anforderungen entspricht (Validierung)
-. Mit einem passenden Editor kann sich per Autovervollständigung Vorschläge für die Eingabe geben lassen und spart Tipparbeit und Fehler
+. Der Anwender kann prüfen, ob das XML-Dokument den Anforderungen entspricht (Validierung).
+. Mit einem passenden Editor kann sich per Autovervollständigung Vorschläge für die Eingabe geben lassen und spart Tipparbeit und vermeidet Fehler.
 
 Die Schemasprache RelaxNG eignet sich sehr gut für diese Aufgabe und wird von vielen XML-Editoren unterstützt.
 RelaxNG kommt in zwei Arten daher, die funktional identisch sind.
@@ -23,6 +23,8 @@ Hinweise auf nicht mehr übliche Techniken wurden entfernt (TREX, DTD, ...)
 
 
 TIP: Neu eingeführte Elemente werden im linken Rand dargestellt. Damit kannst du das Tutorial auch »überfliegen«, wenn du nach einem bestimmten Befehl suchst. Das funktioniert leider nur, wenn der Bildschirm groß genug ist...
+
+Dieses Dokument unterliegt der https://creativecommons.org/licenses/by-sa/3.0/deed.de[CC-By-SA Lizenz]. Der Quelltext (Asciidoctor) des Dokuments ist auf https://github.com/speedata/relaxngtutorial-de[Github] zu finden.
 
 // Ende der Datei
 

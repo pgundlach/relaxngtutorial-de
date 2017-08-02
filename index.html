@@ -27,6 +27,7 @@
 <li><a href="#_optionale_elemente_und_attribute">3. Optionale Elemente und Attribute</a></li>
 <li><a href="#_auswahl_choice">4. Auswahl (Choice)</a></li>
 <li><a href="#_benannte_muster">5. Benannte Muster</a></li>
+<li><a href="#_datentypen">6. Datentypen</a></li>
 </ul>
 </div>
 </div>
@@ -43,10 +44,10 @@ Das hat zwei Vorteile:</p>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Der Anwender kann prüfen, ob das XML-Dokument den Anforderungen entspricht (Validierung)</p>
+<p>Der Anwender kann prüfen, ob das XML-Dokument den Anforderungen entspricht (Validierung).</p>
 </li>
 <li>
-<p>Mit einem passenden Editor kann sich per Autovervollständigung Vorschläge für die Eingabe geben lassen und spart Tipparbeit und Fehler</p>
+<p>Mit einem passenden Editor kann sich per Autovervollständigung Vorschläge für die Eingabe geben lassen und spart Tipparbeit und vermeidet Fehler.</p>
 </li>
 </ol>
 </div>
@@ -72,6 +73,9 @@ Neu eingeführte Elemente werden im linken Rand dargestellt. Damit kannst du das
 </td>
 </tr>
 </table>
+</div>
+<div class="paragraph">
+<p>Dieses Dokument unterliegt der <a href="https://creativecommons.org/licenses/by-sa/3.0/deed.de">CC-By-SA Lizenz</a>. Der Quelltext (Asciidoctor) des Dokuments ist auf <a href="https://github.com/speedata/relaxngtutorial-de">Github</a> zu finden.</p>
 </div>
 </div>
 </div>
@@ -145,7 +149,7 @@ Man kann mit dem Programm <a href="http://www.thaiopensource.com/relaxng/jing.ht
 Andernfalls wird eine Fehlermeldung ausgegeben.</p>
 </div>
 <div class="paragraph">
-<p>Das oben gezeigte Schema erwartet als Wurzelelement ein Element mit dem Namen <code>addressBook</code> mit 0 oder mehreren Kindelementen <code>card</code>, die wiederum zwei Elemente (<code>name</code> und <code>email</code>) in dieser Reihenfolge enthalten. Beide Kindelemente müssen vorhanden sein und enthalten beliebigen Text, der auch leer sein kann. Mit etwas Geduld kann man das ganz gut aus dem Schema ablesen.</p>
+<p>Das oben gezeigte Schema erwartet als Wurzelelement ein Element mit dem Namen <code>addressBook</code> mit keinem oder mehreren Kindelementen <code>card</code>, die wiederum zwei Elemente (<code>name</code> und <code>email</code>) in dieser Reihenfolge enthalten. Beide Kindelemente müssen vorhanden sein und enthalten beliebigen Text, der auch leer sein kann. Mit etwas Geduld kann man das ganz gut aus dem Schema ablesen.</p>
 </div>
 <code class="sidebar">
 oneOrMore</code>
@@ -304,7 +308,7 @@ Da die Reihenfolge der Attribute in XML nicht wichtig ist, können sie bei Relax
 <h2 id="_optionale_elemente_und_attribute">3. Optionale Elemente und Attribute</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Möchte man ein optionales Element hinzufügen, macht man das wie folgt:</p>
+<p>Möchte man ein Element als optional markieren, macht man das wie folgt:</p>
 </div>
 <code class="sidebar">
 optional</code>
@@ -330,10 +334,8 @@ optional</code>
 </div>
 </div>
 <div class="paragraph">
-<p>Das Element <code>note</code> ist nun als Kind von <code>card</code> erlaubt, muss aber nicht angegeben werden. (Dasselbe funktioniert auch bei Attributen, siehe weiter unten).</p>
-</div>
-<div class="paragraph">
-<p>Genauso funktioniert dies mit Attributen:</p>
+<p>Das Element <code>note</code> ist nun als Kind von <code>card</code> erlaubt, muss aber nicht angegeben werden.
+Genauso funktioniert dies mit Attributen:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -434,8 +436,7 @@ group
 </div>
 </div>
 <div class="paragraph">
-<p>Dasselbe geht auch für die Kombination von Elementen und Attribute.
-Wenn man z.B. »entweder Element oder Attribut« beschreiben möchte.
+<p>Choice kann man auch für Kombinationen von Elementen und Attribute nutzen, wenn man z.B. »entweder Element oder Attribut« beschreiben möchte.
 Im nächsten Beispiel kann man entweder das Attribut oder das Element benutzen, und zwar für jedes der beiden Felder <code>name</code> und <code>email</code> separat.</p>
 </div>
 <div class="listingblock">
@@ -468,7 +469,7 @@ Im nächsten Beispiel kann man entweder das Attribut oder das Element benutzen, 
 </div>
 </div>
 <div class="paragraph">
-<p>Folgende XML-Dokumente passen auf dieses Schema:</p>
+<p>Dieses Schema passt auf folgende XML-Dokumente:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -516,7 +517,7 @@ define
 </div>
 </div>
 <div class="paragraph">
-<p>da nun aber bei mehreren Auftreten einer solchen Definition unklar ist, wo das Schema »anfängt«, muss eine andere Struktur her.
+<p>da nun aber bei mehreren solchen Definition unklar ist, wo das Schema »anfängt«, muss eine andere Struktur her.
 Das Grundgerüst ist nun folgendes:</p>
 </div>
 <code class="sidebar">
@@ -535,8 +536,11 @@ start
 </div>
 </div>
 <div class="paragraph">
-<p>Jetzt kann das Schema in Teile zerlegt werden:</p>
+<p>Jetzt kann das bekannte Schema in Teile zerlegt werden:</p>
 </div>
+<code class="sidebar">
+ref
+</code>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;grammar xmlns="http://relaxng.org/ns/structure/1.0"&gt;
@@ -610,11 +614,120 @@ start
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_datentypen">6. Datentypen</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In den letzten Beispielen gab es als einzigen Datentyp »text«, der alles beinhaltet.
+Manchmal ist es jedoch wünschenswert, nur bestimmte Werte zuzulassen, beispielsweise für das Geburtsjahr.
+Der Anwender soll genau vier Ziffern in das Feld schreiben dürfen, die ggf. noch innerhalb eines Wertebereiches liegen.</p>
+</div>
+<div class="paragraph">
+<p>RelaxNG selber kennt keine Datentypen, kann aber »externe« Datentypen einbinden.
+Die wohl am häufigsten benutzte Sammlung an Datentypen hat den URI <code>http://www.w3.org/2001/XMLSchema-datatypes</code>. Dieser Identifier wird im Attribut <code>datatypeLibrary</code> angegeben, das man am einfachsten am Wurzelelement mit angibt:</p>
+</div>
+<code class="sidebar">
+datatypeLibrary
+</code>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;grammar
+  xmlns="http://relaxng.org/ns/structure/1.0"
+  datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"&gt;
+  &lt;start&gt;
+     ...
+  &lt;/start&gt;
+&lt;/grammar&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>bzw.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;element xmlns="http://relaxng.org/ns/structure/1.0"
+  datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
+  name="addressBook"&gt;
+  ...
+&lt;/element&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Möchte man ein Element einschränken auf einen bestimmten Wert, kann man das mit dem Muster <code>data</code> erreichen:</p>
+</div>
+<code class="sidebar">
+data
+</code>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;element name="year"&gt;
+  &lt;data type="gYear"/&gt;
+&lt;/element&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Das erlaubt nur Eingaben, die dem Muster <code>gYear</code> entsprechen.
+Die Beschreibung der eingebauten Typen ist unter <code><a href="https://www.w3.org/TR/xmlschema-2/#built-in-datatypes" class="bare">https://www.w3.org/TR/xmlschema-2/#built-in-datatypes</a></code> zu finden.</p>
+</div>
+<div class="paragraph">
+<p>Nicht erlaubt ist es, verschiedene Datentypen in einem Element zu benutzen.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;!-- nicht erlaubt! --&gt;
+&lt;element name="year"&gt;
+  &lt;data type="gYear"/&gt;
+  &lt;element name="note"&gt;
+    &lt;text/&gt;
+  &lt;/element&gt;
+&lt;/element&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Datentypen können Parameter (Einschränkungen) haben. So sind für den Datentyp <a href="https://www.w3.org/TR/xmlschema-2/#string"><code>string</code></a> die folgenden Einschränkungen möglich:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>length</code></p>
+</li>
+<li>
+<p><code>minLength</code></p>
+</li>
+<li>
+<p><code>maxLength</code></p>
+</li>
+<li>
+<p><code>pattern</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Die beiden Parameter <code>enumeration</code> und <code>whiteSpace</code> sind laut den <a href="http://relaxng.org/xsd-20010907.html">Richtlinien für Datentypen in RelaxNG</a> nicht erlaubt.</p>
+</div>
+<div class="paragraph">
+<p>Diese Parameter werden als Kindelement von <code>data</code> angegeben</p>
+</div>
+<code class="sidebar">
+param
+</code>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;element name="email"&gt;
+  &lt;data type="string"&gt;
+    &lt;param name="minLength"&gt;6&lt;/param&gt;
+    &lt;param name="maxLength"&gt;127&lt;/param&gt;
+  &lt;/data&gt;
+&lt;/element&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 0.1<br>
-Last updated 2017-08-02 14:08:04 CEST
+Last updated 2017-08-02 15:51:52 CEST
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/github.min.css">

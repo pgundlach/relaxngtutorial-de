@@ -1,6 +1,6 @@
 
 == Optionale Elemente und Attribute ==
-Möchte man ein optionales Element hinzufügen, macht man das wie folgt:
+Möchte man ein Element als optional markieren, macht man das wie folgt:
 
 ++++
 <code class="sidebar">
@@ -27,8 +27,7 @@ optional</code>
 </element>
 -------------------------------------------------------------------------------
 
-Das Element `note` ist nun als Kind von `card` erlaubt, muss aber nicht angegeben werden. (Dasselbe funktioniert auch bei Attributen, siehe weiter unten).
-
+Das Element `note` ist nun als Kind von `card` erlaubt, muss aber nicht angegeben werden.
 Genauso funktioniert dies mit Attributen:
 
 [source, xml]

@@ -21,8 +21,4 @@ include::ersteschritte.adoc[]
 include::optional.adoc[]
 include::choice.adoc[]
 include::namedpattern.adoc[]
-
-
-
-
-
+include::datatypes.adoc[]
