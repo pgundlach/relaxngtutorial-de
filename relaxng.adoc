@@ -22,3 +22,5 @@ include::optional.adoc[]
 include::choice.adoc[]
 include::namedpattern.adoc[]
 include::datatypes.adoc[]
+include::enumerations.adoc[]
+

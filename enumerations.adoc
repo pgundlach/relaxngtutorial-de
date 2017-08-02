@@ -1,0 +1,63 @@
+// https://creativecommons.org/licenses/by-sa/3.0/deed.de
+
+
+== Vorbelegte Werte ==
+
+Manchmal möchte man Werte von Elementen oder Attributen auf eine begrenzte Anzahl von Auswahlmöglichkeiten einschränken.
+Dafür gibt es das Muster `value`:
+
+++++
+<code class="sidebar">
+value
+</code>
+++++
+[source, xml]
+-------------------------------------------------------------------------------
+<element name="card">
+  <attribute name="name"/>
+  <attribute name="email"/>
+  <attribute name="preferredFormat">
+    <choice>
+      <value>html</value>
+      <value>text</value>
+    </choice>
+  </attribute>
+</element>
+-------------------------------------------------------------------------------
+
+Analog funktioniert das auch mit Elementinhalten.
+
+
+[source, xml]
+-------------------------------------------------------------------------------
+<element name="preferredFormat">
+  <choice>
+    <value>html</value>
+    <value>text</value>
+  </choice>
+</element>
+-------------------------------------------------------------------------------
+
+Vorsicht: Dieses Muster schränkt zwar die Werte auf `html` und `text` ein, erlaubt aber Leerzeichen (Whitespace) am Anfang und am Ende des Wertes. So ist
+
+[source, xml]
+-------------------------------------------------------------------------------
+<preferredFormat> html </preferredFormat>
+-------------------------------------------------------------------------------
+
+ein gültiger Wert für das `value`-Muster oben. Um das zu verhindern kann man dem Element `value` mit dem Attribut `type` einschränken:
+
+[source, xml]
+-------------------------------------------------------------------------------
+<element name="preferredFormat">
+  <choice>
+    <value type="string">html</value>
+    <value type="string">text</value>
+  </choice>
+</element>
+-------------------------------------------------------------------------------
+
+NOTE: Ist keine datatypeLibrary festgelegt (siehe das vorherige Kapitel), dann werden die internen Typen `token` oder `string` genommen, die dem ersten (mit Whitespace) bzw. dem zweiten genannten Verhalten (ohne Whitespace) entsprechen.
+
+// Ende der Datei
+
