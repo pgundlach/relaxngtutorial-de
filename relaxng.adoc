@@ -1,15 +1,21 @@
+// https://creativecommons.org/licenses/by-sa/3.0/deed.de
 = RelaxNG Tutorial
 Patrick Gundlach <gundlach@speedata.de>
 v0.1, 2017-08-01
-:icons: font
 :sectnums:
-:toc: left
 :lang: de
+:toc:
 :figure-caption: Abbildung
 :toc-title: Inhalt
+:docinfo: private
+:icons: font
+:stylesheet: relaxng.css
+:stylesdir: css
+:subs: none
 :source-highlighter: highlightjs
+:linkcss:
 
 
+include::vorwort.adoc[]
 include::ersteschritte.adoc[]
-
-
+include::optional.adoc[]

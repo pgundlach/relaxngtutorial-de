@@ -1,0 +1,52 @@
+
+== Optionale Elemente und Attribute ==
+Möchte man ein optionales Element hinzufügen, macht man das wie folgt:
+
+++++
+<code class="sidebar">
+optional</code>
+++++
+[source, xml]
+-------------------------------------------------------------------------------
+<element name="addressBook" xmlns="http://relaxng.org/ns/structure/1.0">
+  <zeroOrMore>
+    <element name="card">
+      <element name="name">
+        <text/>
+      </element>
+      <element name="email">
+        <text/>
+      </element>
+      <optional>
+        <element name="note">
+          <text/>
+        </element>
+      </optional>
+    </element>
+  </zeroOrMore>
+</element>
+-------------------------------------------------------------------------------
+
+Das Element `note` ist nun als Kind von `card` erlaubt, muss aber nicht angegeben werden. (Dasselbe funktioniert auch bei Attributen, siehe weiter unten).
+
+Genauso funktioniert dies mit Attributen:
+
+[source, xml]
+-------------------------------------------------------------------------------
+<element name="addressBook" xmlns="http://relaxng.org/ns/structure/1.0">
+  <zeroOrMore>
+    <element name="card">
+      <attribute name="name"/>
+      <attribute name="email"/>
+      <optional>
+        <attribute name="note" />
+      </optional>
+    </element>
+  </zeroOrMore>
+</element>
+-------------------------------------------------------------------------------
+
+Das Attribut `note` kann angegeben werden.
+
+
+// Ende der Datei

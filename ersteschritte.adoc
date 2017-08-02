@@ -1,7 +1,210 @@
 
-== Erste Schritte ==
+== Los geht's ==
 
 
-...
+Als Beispiel für das Tutorial (bzw. die ersten Schritte) soll folgende XML-Datei dienen, für die ein Schema erstellt werden soll (speichern z.B. unter `source.xml`):
+
+[source, xml]
+-------------------------------------------------------------------------------
+<addressBook>
+  <card>
+    <name>John Smith</name>
+    <email>js@example.com</email>
+  </card>
+  <card>
+    <name>Fred Bloggs</name>
+    <email>fb@example.net</email>
+  </card>
+</addressBook>
+-------------------------------------------------------------------------------
 
 
+Das dazugehörige Schema könnte wie folgt aussehen (speichern z.B. unter `schema.rng`):
+
+
+++++
+<code class="sidebar">
+element<br>
+zeroOrMore<br>
+text
+</code>
+++++
+[source, xml]
+-------------------------------------------------------------------------------
+<element name="addressBook" xmlns="http://relaxng.org/ns/structure/1.0">
+  <zeroOrMore>
+    <element name="card">
+      <element name="name">
+        <text/>
+      </element>
+      <element name="email">
+        <text/>
+      </element>
+    </element>
+  </zeroOrMore>
+</element>
+-------------------------------------------------------------------------------
+
+
+NOTE: Es ist schwierig ein Schema aus einer XML-Datei zu erzeugen, wenn nicht genügend Informationen über die Datei bekannt sind. Ist das Feld `email` zwingend notwendig? Dürfen noch weitere Elemente hinzukommen? Ohne die Antworten zu kennen, ist das dazugehörige Schema möglicherweise unvollständig. Das soll im Tutorial aber nicht weiter stören, da wir uns nur die Schemasprache anschauen.
+
+
+Die Validierung des Dokuments wird meist in einem XML-Editor durchgeführt (z.B. oXygen XML), in der Regel auch während der Eingabe.
+Man kann mit dem Programm http://www.thaiopensource.com/relaxng/jing.html[Jing] auch auf der Kommandozeile validieren, das ist aber natürlich etwas umständlicher, für automatisierte Workflows aber extrem praktisch:
+
+[source, sh]
+-------------------------------------------------------------------------------
+java -jar jing.jar schema.rng source.xml
+-------------------------------------------------------------------------------
+
+
+Passt die XML-Datei zum Schema, so gibt es keine Ausgabe und der Rückgabewert des Programms ist 0.
+Andernfalls wird eine Fehlermeldung ausgegeben.
+
+
+Das oben gezeigte Schema erwartet als Wurzelelement ein Element mit dem Namen `addressBook` mit 0 oder mehreren Kindelementen `card`, die wiederum zwei Elemente (`name` und `email`) in dieser Reihenfolge enthalten. Beide Kindelemente müssen vorhanden sein und enthalten beliebigen Text, der auch leer sein kann. Mit etwas Geduld kann man das ganz gut aus dem Schema ablesen.
+
+++++
+<code class="sidebar">
+oneOrMore</code>
+++++
+Möchte man z.B. dass `addressBook` mindestens ein Element `card` enthält, dann ersetzt man `zeroOrMore` durch `oneOrMore`:
+
+
+[source, xml]
+-------------------------------------------------------------------------------
+<element name="addressBook" xmlns="http://relaxng.org/ns/structure/1.0">
+  <oneOrMore>
+    <element name="card">
+      <element name="name">
+        <text/>
+      </element>
+      <element name="email">
+        <text/>
+      </element>
+    </element>
+  </oneOrMore>
+</element>
+-------------------------------------------------------------------------------
+
+
+== Attribute ==
+
+Falls anstelle von Elementen Attribute gewünscht sind, kann man das einfach erreichen. Dazu passt man das Schema an und ersetzt quasi die `<element ..>` durch `<attribute ..>`:
+
+++++
+<code class="sidebar">
+attribute
+</code>
+++++
+[source, xml]
+-------------------------------------------------------------------------------
+<element name="addressBook" xmlns="http://relaxng.org/ns/structure/1.0">
+  <zeroOrMore>
+    <element name="card">
+      <attribute name="name" />
+      <attribute name="email" />
+    </element>
+  </zeroOrMore>
+</element>
+-------------------------------------------------------------------------------
+
+TIP: Da die Reihenfolge der Attribute in XML nicht wichtig ist, können sie bei RelaxNG auch in beliebiger Reihenfolge festgelegt werden. Bei Elementen hingegen ist die Reihenfolge wesentlich.
+
+
+Es gibt einen Unterschied zwischen den Mustern für Attribute und Elemente. Die Voreinstellung für den Inhalt von Attributen ist `<text />`. Daraus folgt, dass
+
+[source, xml]
+-------------------------------------------------------------------------------
+<attribute name="email"/>
+-------------------------------------------------------------------------------
+
+die Kurzform für
+
+[source, xml]
+-------------------------------------------------------------------------------
+<attribute name="email">
+  <text/>
+</attribute>
+-------------------------------------------------------------------------------
+
+ist. Für Elemente hingegen gibt es keine Voreinstellung.
+
+[source, xml]
+-------------------------------------------------------------------------------
+<!-- nicht erlaubt! -->
+<element name="email"/>
+-------------------------------------------------------------------------------
+
+Leere Elemente müssen explizit als solche gekennzeichnet sein.
+
+[source, xml]
+-------------------------------------------------------------------------------
+<!-- aber das hier ist erlaubt -->
+<element name="email">
+  <empty />
+</element>
+-------------------------------------------------------------------------------
+
+Ist hingegen ein Attribut erlaubt, ist das `<empty />` nicht notwendig, wird aber implizit angenommen:
+
+[source, xml]
+-------------------------------------------------------------------------------
+<element name="card">
+  <attribute name="email" />
+</element>
+-------------------------------------------------------------------------------
+
+ist dasselbe wie
+
+[source, xml]
+-------------------------------------------------------------------------------
+<element name="card">
+  <attribute name="email" />
+  <empty/>
+</element>
+-------------------------------------------------------------------------------
+
+
+
+
+[discrete]
+=== Namensraum ===
+
+Der Namensraum von RelaxNG ist `\http://relaxng.org/ns/structure/1.0`. Mit dem »Attribut«
+
+[source, xml]
+-------------------------------------------------------------------------------
+xmlns="http://relaxng.org/ns/structure/1.0"
+-------------------------------------------------------------------------------
+
+wird dieser Namensraum als Voreinstellung für alle (Kind-)Elemente genommen. Man kann jedoch genau so gut einen Präfix nutzen:
+
+
+[source, xml]
+-------------------------------------------------------------------------------
+xmlns:rng="http://relaxng.org/ns/structure/1.0"
+-------------------------------------------------------------------------------
+
+dann müssen alle Elemente dieses Präfix benutzen:
+
+[source, xml]
+-------------------------------------------------------------------------------
+<rng:element name="addressBook" xmlns:rng="http://relaxng.org/ns/structure/1.0">
+  <rng:zeroOrMore>
+    <rng:element name="card">
+      <rng:element name="name">
+        <rng:text/>
+      </rng:element>
+      <rng:element name="email">
+        <rng:text/>
+      </rng:element>
+    </rng:element>
+  </rng:zeroOrMore>
+</rng:element>
+-------------------------------------------------------------------------------
+
+
+
+
+// Ende der Datei
