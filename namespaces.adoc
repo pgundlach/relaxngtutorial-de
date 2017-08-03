@@ -1,0 +1,237 @@
+// https://creativecommons.org/licenses/by-sa/3.0/deed.de
+== Namensräume (Namespaces) ==
+
+
+RELAX NG kann mit XML-Namensräumen umgehen.
+Damit ist nicht der Namensraum der Schemadatei gemeint, sondern die Namensräume der zu validierenden XML-Datei.
+Diese kann keinen oder mehrere Namensräume enthalten.
+Namensräume sind fester Bestandteil einer XML-Datei und daher muss das Schema diese Namensräume prüfen können.
+
+
+Für diejenigen, die sich nicht so sicher sind, wie die XML-Namensräume funktionieren, gibt es hier eine Auffrischung:
+
+=== Auffrischung: XML-Namensräume ===
+
+Ein Elementname oder ein Attributname besteht immer aus einem lokalen Namen und einem ggf. leerem  Namensraum.
+Der Namensraum hat zur Kennung einen (fast beliebigen) Präfix und ist ein sogenannter »uniform resource identifier« (URI).
+
+In XML werden Namensräume zweistufig angewendet. Die erste Stufe ist es, einem Präfix einen URI zuzuweisen:
+
+-------------------------------------------------------------------------------
+xmlns:ex="http://example.com"
+-------------------------------------------------------------------------------
+
+Anschließend kann das Präfix wie folgt benutzt werden:
+
+
+[source, xml]
+-------------------------------------------------------------------------------
+<ex:elementname />
+-------------------------------------------------------------------------------
+
+In diesem Fall hat das Element den lokalen Namen `elementname` und den Namensraum `\http://example.com`.
+Das benutzte Präfix ist egal (in manchen Fällen spielt er dennoch eine Rolle, aber das sei hier vernachlässigt).
+Der Namensraum sieht häufig aus wie eine URL, ist es aber nicht! Es ist nur ein beliebiger, möglichst eindeutiger String.
+
+Das Präfix ist optional. Wenn es weggelassen wird, spricht man von einem Default-Namespace. Die erste Stufe hat dann die Form ohne `:ex`:
+
+
+-------------------------------------------------------------------------------
+xmlns="http://example.com"
+-------------------------------------------------------------------------------
+
+die zweite Stufe dann
+
+[source, xml]
+-------------------------------------------------------------------------------
+<elementname />
+-------------------------------------------------------------------------------
+
+Der Namensraum (bzw. der Name) des Elements `elementanme` ist in beiden Beispielen identisch.
+Es sollte keine technische Unterscheidung geben zwischen den beiden Varianten mit explizitem Namensraum und mit Default-Namensraum.
+
+Noch ein wichtiger Hinweis. Die erste Stufe (die Zuordnung eines Präfix zu dem Namensraum) erfolgt am benutzten Element selbst oder an einem der Elternelemente. Das Beispiel oben wäre vollständig also wie folgt:
+
+
+[source, xml]
+-------------------------------------------------------------------------------
+<ex:elementname  xmlns:ex="http://example.com" />
+-------------------------------------------------------------------------------
+
+oder
+
+[source, xml]
+-------------------------------------------------------------------------------
+<elternelement xmlns:ex="http://example.com">
+  <ex:elementname />
+<elternelement>
+-------------------------------------------------------------------------------
+
+Im letzten Fall hat das Elternelement _nicht_ den Namensraum `\http://example.com`, das Kindelement schon.
+
+Mit diesem Exkurs sollte die Anwendung von RELAX NG-Namensräumen kein Problem darstellen.
+
+
+=== Benutzung des Attributs `ns` ===
+
+In dem Attribut `ns` kann der erwartete Namensraum einfach angegeben werden:
+
+++++
+<code class="sidebar">
+ns
+</code>
+++++
+[source, xml]
+-------------------------------------------------------------------------------
+<element name="foo" ns="http://example.com">
+  <empty/>
+</element>
+-------------------------------------------------------------------------------
+
+Dieses Schema passt auf folgende Elemente:
+
+[source, xml]
+-------------------------------------------------------------------------------
+<foo xmlns="http://example.com"/>
+<e:foo xmlns:e="http://example.com"/>
+<example:foo xmlns:example="http://example.com"/>
+-------------------------------------------------------------------------------
+
+aber nicht auf diese hier:
+
+
+[source, xml]
+-------------------------------------------------------------------------------
+<foo/>
+<e:foo xmlns:e="http://EXAMPLE.COM"/>
+<example:foo xmlns:example="http://example.net"/>
+-------------------------------------------------------------------------------
+
+Ist ds Attribut `ns` leer, so wird ein leerer Namensraum erwartet.
+
+[source, xml]
+-------------------------------------------------------------------------------
+<element name="foo" ns="">
+  <empty/>
+</element>
+-------------------------------------------------------------------------------
+
+passt auf diese Elemente
+
+[source, xml]
+-------------------------------------------------------------------------------
+<foo xmlns=""/>
+<foo/>
+-------------------------------------------------------------------------------
+
+aber nicht auf folgende:
+
+[source, xml]
+-------------------------------------------------------------------------------
+<foo xmlns="http://example.com"/>
+<e:foo xmlns:e="http://example.com"/>
+-------------------------------------------------------------------------------
+
+Das Attribut `ns` muss nicht an jedem Element angegeben werden. Das Schema sucht nach dem nächsten Elternelement, das ein solches Attribut hat. So kann man einen Namensraum, der für die ganze XML-Datei gilt, auch am Wurzelelement `grammer` angeben:
+
+
+[source, xml]
+-------------------------------------------------------------------------------
+<grammar
+  xmlns="http://relaxng.org/ns/structure/1.0"
+  ns="http://example.com">
+
+  <start>
+    <element name="addressBook">
+      <empty/>
+    </element>
+  </start>
+
+</grammar>
+-------------------------------------------------------------------------------
+
+Das Element `addressBook` wird im Namensraum `http://example.com` erwartet.
+
+Nochmals der Hinweis: der Eintrag `xmlns="http://relaxng.org/ns/structure/1.0"` ist nur dafür da, die Schemadatei als RELAX NG Datei zu kennzeichnen und hat nichts mit dem zu überprüfenden XML-Dokument zu tun.
+
+
+=== Namensräume in Attributen ===
+
+Eine Besonderheit bei Namensräumen in Attributen ist meiner Meinung eine Schwachstelle der Definition von XML-Namensräumen.
+Die Attribute eines Elements befinden sich _nicht_ in demselben Namensraum des umschließenden Elements. D.h. im Beispiel von oben
+
+[source, xml]
+-------------------------------------------------------------------------------
+<elementname attrib="wert"  xmlns="http://example.com" />
+-------------------------------------------------------------------------------
+
+ist das Attribut `attrib` nicht im selben Namensraum wie das Element.
+
+Daher ist die Voreinstellung für Attribute der leere Namensraum:
+
+
+[source, xml]
+-------------------------------------------------------------------------------
+<element name="addressBook" ns="http://example.com">
+  <zeroOrMore>
+    <element name="card">
+      <attribute name="name"/>
+      <attribute name="email"/>
+    </element>
+  </zeroOrMore>
+</element>
+-------------------------------------------------------------------------------
+
+ist identisch zu:
+
+[source, xml]
+-------------------------------------------------------------------------------
+<element name="addressBook" ns="http://example.com">
+  <zeroOrMore>
+    <element name="card" ns="http://example.com">
+      <attribute name="name" ns=""/>
+      <attribute name="email" ns=""/>
+    </element>
+  </zeroOrMore>
+</element>
+-------------------------------------------------------------------------------
+
+
+
+
+
+=== Namensräume mit qualifizierten Namen ===
+
+Anstelle des Attributs `ns` wie oben beschrieben können die Namensräume auch direkt angegeben werden:
+
+
+[source, xml]
+-------------------------------------------------------------------------------
+<grammar
+  xmlns="http://relaxng.org/ns/structure/1.0">
+
+  <start xmlns:ex="http://example.com">
+    <element name="ex:addressBook">
+      ...
+    </element>
+  </start>
+
+</grammar>
+-------------------------------------------------------------------------------
+
+passt auf folgende XML-Datei:
+
+
+[source, xml]
+-------------------------------------------------------------------------------
+<ex:addressBook  xmlns:ex="http://example.com" >
+  ...
+</ex:addressBook>
+-------------------------------------------------------------------------------
+
+
+
+Das ist hilfreich, wenn mehrere Namensräume in der zu validierenden XML-Datei vorkommen und man sich die mehrfache Angabe des Attributs `ns` ersparen möchte. Die direkte Angabe mit qualifizierten Namen hat Vorrang vor der Angabe des Attributs `ns`.
+
+// Ende der Datei
+

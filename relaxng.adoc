@@ -28,4 +28,5 @@ include::lists.adoc[]
 include::interleave.adoc[]
 include::kombinationen.adoc[]
 include::modularity.adoc[]
+include::namespaces.adoc[]
 
