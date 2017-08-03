@@ -1,0 +1,157 @@
+// https://creativecommons.org/licenses/by-sa/3.0/deed.de
+== Namensklassen ==
+
+Ein etwas esoterisches Kapitel.
+Zwar durchaus praxisrelevant, aber man muss manchmal lange auf die Konstrukte schauen, um sie zu verstehen.
+
+
+++++
+<code class="sidebar">
+anyName
+</code>
+++++
+[source, xml]
+-------------------------------------------------------------------------------
+<grammar
+  xmlns="http://relaxng.org/ns/structure/1.0">
+
+  <start>
+    <element name="wurzel">
+      <ref name="beliebig"/>
+    </element>
+  </start>
+
+  <define name="beliebig">
+    <element>
+      <anyName />
+      <empty/>
+    </element>
+  </define>
+</grammar>
+-------------------------------------------------------------------------------
+
+Der Name der Definition sagt schon, was hier passiert. Es ist als Kind vom Wurzelelement ein (leeres) Element mit einem beliebigen Namen erlaubt.
+Das Element `anyName` ist eine Namensklasse.
+Es gibt noch weitere Klassen, die hier als Beispiele aufgeführt werden sollen:
+
+
+++++
+<code class="sidebar">
+except<br>
+name
+</code>
+++++
+-------------------------------------------------------------------------------
+<grammar
+  xmlns="http://relaxng.org/ns/structure/1.0">
+
+  <start>
+    <element name="wurzel">
+      <ref name="fastbeliebig"/>
+    </element>
+  </start>
+
+  <define name="fastbeliebig">
+    <element>
+      <anyName>
+        <except>
+          <name>hallo</name>
+        </except>
+      </anyName>
+      <empty/>
+    </element>
+  </define>
+</grammar>
+
+-------------------------------------------------------------------------------
+
+Folgendes XML-Dokument ist nicht durch das Schema gedeckt:
+
+
+[source, xml]
+-------------------------------------------------------------------------------
+<wurzel>
+  <hallo></hallo>
+</wurzel>
+-------------------------------------------------------------------------------
+
+Weil der »verbotene« Namen benutzt wurde.
+
+
+Die Klasse `nsName` hat ein Attribut `ns`, das wie unter Namensräume beschrieben funktioniert:
+
+++++
+<code class="sidebar">
+nsName
+</code>
+++++
+[source, xml]
+-------------------------------------------------------------------------------
+<element name="card" ns="http://www.example.com">
+  <zeroOrMore>
+    <attribute>
+      <anyName>
+        <except>
+          <nsName/>
+          <nsName ns=""/>
+        </except>
+      </anyName>
+    </attribute>
+  </zeroOrMore>
+  <text/>
+</element>
+-------------------------------------------------------------------------------
+
+Das Element `card` darf Attribute enthalten, die nicht
+
+* im Namensraum `\http://www.example.com` sind (1. Regel, das Attribut `ns` wird aus `element` genommen)
+* im leeren Namensraum sind (2. Regel)
+
+---
+
+Machmal möchte man beliebige Attribute in einem Element zulassen, bei manchen Attributen aber nur bestimmte Werte erlauben.
+Ein Beispiel ist `xml:space`, das die Werte `default` und `preserve` enthalten darf.
+
+Das Muster, beliebige Attribute zuzulassen, ist klar:
+
+[source, xml]
+-------------------------------------------------------------------------------
+<element name="example">
+  <zeroOrMore>
+    <attribute>
+      <anyName/>
+    </attribute>
+  </zeroOrMore>
+</element>
+-------------------------------------------------------------------------------
+
+Wenn man die Werte für das Attribut `xml:space` nutzen will, dann muss man die Namensklasse `anyName` oben einschränken:
+
+
+[source, xml]
+-------------------------------------------------------------------------------
+<element name="example">
+  <zeroOrMore>
+    <attribute>
+      <anyName>
+        <except>
+          <name>xml:space</name>
+        </except>
+      </anyName>
+    </attribute>
+  </zeroOrMore>
+
+  <attribute name="xml:space">
+    <choice>
+      <value>default</value>
+      <value>preserve</value>
+    </choice>
+  </attribute>
+</element>
+-------------------------------------------------------------------------------
+
+Wird die Einschränkung weggelassen, so würde `xml:space` sowohl auf das obere als auch auf das untere Muster passen.
+Das ist mehrdeutig und daher nicht erlaubt.
+
+
+// Ende der Datei

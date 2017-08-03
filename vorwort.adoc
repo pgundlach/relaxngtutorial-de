@@ -3,7 +3,7 @@
 [discrete]
 == Vorwort ==
 
-RELAX NG (gesprochen: relaxing) ist eine Schemasprache für XML, mit der man den Aufbau eines XML-Dokuments beschreiben kann.
+RELAX NG ist eine Schemasprache für XML, mit der man den Aufbau eines XML-Dokuments beschreiben kann.
 Hat man ein solches Schema erstellt, dann kann man leicht überprüfen, ob ein XML-Dokument den Anforderungen entspricht.
 Beispielsweise kann man in einem Schema festlegen, dass ein Adressbucheintrag genau einen Vornamen und einen Nachnamen enthalten muss.
 Das hat zwei Vorteile:

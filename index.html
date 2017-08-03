@@ -34,6 +34,7 @@
 <li><a href="#_mehrfachdefinitionen_combine">10. Mehrfachdefinitionen (combine )</a></li>
 <li><a href="#_mehrere_schemadateien">11. Mehrere Schemadateien</a></li>
 <li><a href="#_namensräume_namespaces">12. Namensräume (Namespaces)</a></li>
+<li><a href="#_namensklassen">13. Namensklassen</a></li>
 </ul>
 </div>
 </div>
@@ -42,7 +43,7 @@
 <div class="sectionbody">
 <h2 id="_vorwort" class="discrete">Vorwort</h2>
 <div class="paragraph">
-<p>RELAX NG (gesprochen: relaxing) ist eine Schemasprache für XML, mit der man den Aufbau eines XML-Dokuments beschreiben kann.
+<p>RELAX NG ist eine Schemasprache für XML, mit der man den Aufbau eines XML-Dokuments beschreiben kann.
 Hat man ein solches Schema erstellt, dann kann man leicht überprüfen, ob ein XML-Dokument den Anforderungen entspricht.
 Beispielsweise kann man in einem Schema festlegen, dass ein Adressbucheintrag genau einen Vornamen und einen Nachnamen enthalten muss.
 Das hat zwei Vorteile:</p>
@@ -1700,11 +1701,173 @@ Die Attribute eines Elements befinden sich <em>nicht</em> in demselben Namensrau
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_namensklassen">13. Namensklassen</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Ein etwas esoterisches Kapitel.
+Zwar durchaus praxisrelevant, aber man muss manchmal lange auf die Konstrukte schauen, um sie zu verstehen.</p>
+</div>
+<code class="sidebar">
+anyName
+</code>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;grammar
+  xmlns="http://relaxng.org/ns/structure/1.0"&gt;
+
+  &lt;start&gt;
+    &lt;element name="wurzel"&gt;
+      &lt;ref name="beliebig"/&gt;
+    &lt;/element&gt;
+  &lt;/start&gt;
+
+  &lt;define name="beliebig"&gt;
+    &lt;element&gt;
+      &lt;anyName /&gt;
+      &lt;empty/&gt;
+    &lt;/element&gt;
+  &lt;/define&gt;
+&lt;/grammar&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Der Name der Definition sagt schon, was hier passiert. Es ist als Kind vom Wurzelelement ein (leeres) Element mit einem beliebigen Namen erlaubt.
+Das Element <code>anyName</code> ist eine Namensklasse.
+Es gibt noch weitere Klassen, die hier als Beispiele aufgeführt werden sollen:</p>
+</div>
+<code class="sidebar">
+except<br>
+name
+</code>
+<div class="listingblock">
+<div class="content">
+<pre>&lt;grammar
+  xmlns="http://relaxng.org/ns/structure/1.0"&gt;
+
+  &lt;start&gt;
+    &lt;element name="wurzel"&gt;
+      &lt;ref name="fastbeliebig"/&gt;
+    &lt;/element&gt;
+  &lt;/start&gt;
+
+  &lt;define name="fastbeliebig"&gt;
+    &lt;element&gt;
+      &lt;anyName&gt;
+        &lt;except&gt;
+          &lt;name&gt;hallo&lt;/name&gt;
+        &lt;/except&gt;
+      &lt;/anyName&gt;
+      &lt;empty/&gt;
+    &lt;/element&gt;
+  &lt;/define&gt;
+&lt;/grammar&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Folgendes XML-Dokument ist nicht durch das Schema gedeckt:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;wurzel&gt;
+  &lt;hallo&gt;&lt;/hallo&gt;
+&lt;/wurzel&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Weil der »verbotene« Namen benutzt wurde.</p>
+</div>
+<div class="paragraph">
+<p>Die Klasse <code>nsName</code> hat ein Attribut <code>ns</code>, das wie unter Namensräume beschrieben funktioniert:</p>
+</div>
+<code class="sidebar">
+nsName
+</code>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;element name="card" ns="http://www.example.com"&gt;
+  &lt;zeroOrMore&gt;
+    &lt;attribute&gt;
+      &lt;anyName&gt;
+        &lt;except&gt;
+          &lt;nsName/&gt;
+          &lt;nsName ns=""/&gt;
+        &lt;/except&gt;
+      &lt;/anyName&gt;
+    &lt;/attribute&gt;
+  &lt;/zeroOrMore&gt;
+  &lt;text/&gt;
+&lt;/element&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Das Element <code>card</code> darf Attribute enthalten, die nicht</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>im Namensraum <code>http://www.example.com</code> sind (1. Regel, das Attribut <code>ns</code> wird aus <code>element</code> genommen)</p>
+</li>
+<li>
+<p>im leeren Namensraum sind (2. Regel)</p>
+</li>
+</ul>
+</div>
+<hr>
+<div class="paragraph">
+<p>Machmal möchte man beliebige Attribute in einem Element zulassen, bei manchen Attributen aber nur bestimmte Werte erlauben.
+Ein Beispiel ist <code>xml:space</code>, das die Werte <code>default</code> und <code>preserve</code> enthalten darf.</p>
+</div>
+<div class="paragraph">
+<p>Das Muster, beliebige Attribute zuzulassen, ist klar:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;element name="example"&gt;
+  &lt;zeroOrMore&gt;
+    &lt;attribute&gt;
+      &lt;anyName/&gt;
+    &lt;/attribute&gt;
+  &lt;/zeroOrMore&gt;
+&lt;/element&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Wenn man die Werte für das Attribut <code>xml:space</code> nutzen will, dann muss man die Namensklasse <code>anyName</code> oben einschränken:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;element name="example"&gt;
+  &lt;zeroOrMore&gt;
+    &lt;attribute&gt;
+      &lt;anyName&gt;
+        &lt;except&gt;
+          &lt;name&gt;xml:space&lt;/name&gt;
+        &lt;/except&gt;
+      &lt;/anyName&gt;
+    &lt;/attribute&gt;
+  &lt;/zeroOrMore&gt;
+
+  &lt;attribute name="xml:space"&gt;
+    &lt;choice&gt;
+      &lt;value&gt;default&lt;/value&gt;
+      &lt;value&gt;preserve&lt;/value&gt;
+    &lt;/choice&gt;
+  &lt;/attribute&gt;
+&lt;/element&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Wird die Einschränkung weggelassen, so würde <code>xml:space</code> sowohl auf das obere als auch auf das untere Muster passen.
+Das ist mehrdeutig und daher nicht erlaubt.</p>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 0.1<br>
-Last updated 2017-08-03 11:56:58 CEST
+Last updated 2017-08-03 13:00:14 CEST
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/github.min.css">
