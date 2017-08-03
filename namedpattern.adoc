@@ -1,4 +1,6 @@
 // https://creativecommons.org/licenses/by-sa/3.0/deed.de
+
+[[benanntemuster]]
 == Benannte Muster ==
 
 Für alle größeren Schemadateien ist es vorteilhaft, wenn man das Schema in einzelne Teile gliedert. Mit `define` kann man einen einzelnen Abschnitt definieren und einen Namen zuweisen, auf dem man später mit `ref` verweisen kann.
@@ -21,7 +23,7 @@ define
 </define>
 -------------------------------------------------------------------------------
 
-da nun aber bei mehreren solchen Definition unklar ist, wo das Schema »anfängt«, muss eine andere Struktur her.
+da nun aber bei mehreren solchen Definitionen unklar ist, wo das Schema »anfängt«, muss eine andere Struktur her.
 Das Grundgerüst ist nun folgendes:
 
 ++++

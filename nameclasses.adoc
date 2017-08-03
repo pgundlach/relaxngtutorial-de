@@ -75,7 +75,7 @@ Folgendes XML-Dokument ist nicht durch das Schema gedeckt:
 </wurzel>
 -------------------------------------------------------------------------------
 
-Weil der »verbotene« Namen benutzt wurde.
+Weil der »verbotene« Name benutzt wurde.
 
 
 Die Klasse `nsName` hat ein Attribut `ns`, das wie unter Namensräume beschrieben funktioniert:

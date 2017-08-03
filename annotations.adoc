@@ -30,7 +30,7 @@ image::oxygen.png[screenshot aus dem oXygen Editor mit tooltip]
 
 
 RELAX NG hat auch ein `div`-Element, das keinerlei Bedeutung hat.
-Es dient lediglich zur logischen Trennung für den Anwender und hat auf das Anwenden der Regeln keine Auswirkung.
+Es dient lediglich zur logischen Trennung für den Anwender und hat auf die Ausführung der Regeln keine Auswirkung.
 Man könnte mit einem Namensraum selber eine Trennung vornehmen um ein Schema zu modularisieren.
 
 

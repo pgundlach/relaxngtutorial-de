@@ -77,7 +77,7 @@ Das Muster oben erlaubt die folgende XML-Datei:
 </head>
 -------------------------------------------------------------------------------
 
-Man könnte vermuten, dass die `meta`-Elemente hintereinander stehen müssen, weil sie durch `zeroOrMore` gekennzeichnet sind.
+Man könnte vermuten, dass die `meta`-Elemente hintereinander stehen müssen, weil sie durch `zeroOrMore` zusammenhängen.
 
 
 [discrete]

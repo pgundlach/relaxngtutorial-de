@@ -47,11 +47,13 @@ text
 -------------------------------------------------------------------------------
 
 
-NOTE: Es ist schwierig ein Schema aus einer XML-Datei zu erzeugen, wenn nicht genügend Informationen über die Datei bekannt sind. Ist das Feld `email` zwingend notwendig? Dürfen noch weitere Elemente hinzukommen? Ohne die Antworten zu kennen, ist das dazugehörige Schema möglicherweise unvollständig. Das soll im Tutorial aber nicht weiter stören, da wir uns nur die Schemasprache anschauen.
+// NOTE: Es ist schwierig ein Schema aus einer XML-Datei zu erzeugen, wenn nicht genügend Informationen über die Datei bekannt sind. Ist das Feld `email` zwingend notwendig? Dürfen noch weitere Elemente hinzukommen? Ohne die Antworten zu kennen, ist das dazugehörige Schema möglicherweise unvollständig. Das soll im Tutorial aber nicht weiter stören, da wir uns nur die Schemasprache anschauen.
+
+NOTE: Die hier aufgezeigte Form des Schemas (mit dem Wurzelelement `element`) ist in der Praxis eher unüblich. RELAX NG Schemadateien haben als Wurzelelement  oft `grammar`, das wesentlich flexibler ist. Das wird in Kapitel <<benanntemuster>> eingeführt.
 
 
-Die Validierung des Dokuments wird meist in einem XML-Editor durchgeführt (z.B. oXygen XML), in der Regel auch während der Eingabe.
-Man kann mit dem Programm http://www.thaiopensource.com/relaxng/jing.html[Jing] auch auf der Kommandozeile validieren, das ist aber natürlich etwas umständlicher, für automatisierte Workflows aber extrem praktisch:
+Die Validierung des Dokuments wird meist in einem XML-Editor durchgeführt (z.B. https://www.oxygenxml.com/[oXygen XML]), in der Regel auch während der Eingabe.
+Man kann mit dem Programm http://www.thaiopensource.com/relaxng/jing.html[Jing] auch auf der Kommandozeile validieren, das ist  natürlich etwas umständlicher, für automatisierte Workflows jedoch extrem praktisch:
 
 [source, sh]
 -------------------------------------------------------------------------------
@@ -130,24 +132,21 @@ die Kurzform für
 -------------------------------------------------------------------------------
 
 ist. Für Elemente hingegen gibt es keine Voreinstellung.
+Leere Elemente müssen explizit als solche gekennzeichnet sein.
 
 [source, xml]
 -------------------------------------------------------------------------------
 <!-- nicht erlaubt! -->
 <element name="email"/>
--------------------------------------------------------------------------------
 
-Leere Elemente müssen explizit als solche gekennzeichnet sein.
 
-[source, xml]
--------------------------------------------------------------------------------
 <!-- aber das hier ist erlaubt -->
 <element name="email">
   <empty />
 </element>
 -------------------------------------------------------------------------------
 
-Ist hingegen ein Attribut erlaubt, ist das `<empty />` nicht notwendig, wird aber implizit angenommen:
+Ist hingegen ein Attribut definiert, ist das `<empty />` nicht notwendig  und wird implizit angenommen:
 
 [source, xml]
 -------------------------------------------------------------------------------

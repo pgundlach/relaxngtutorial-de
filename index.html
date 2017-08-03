@@ -26,7 +26,7 @@
 <li><a href="#_attribute">2. Attribute</a></li>
 <li><a href="#_optionale_elemente_und_attribute">3. Optionale Elemente und Attribute</a></li>
 <li><a href="#_auswahl_choice">4. Auswahl (Choice)</a></li>
-<li><a href="#_benannte_muster">5. Benannte Muster</a></li>
+<li><a href="#benanntemuster">5. Benannte Muster</a></li>
 <li><a href="#_datentypen">6. Datentypen</a></li>
 <li><a href="#_vorbelegte_werte">7. Vorbelegte Werte</a></li>
 <li><a href="#_listen">8. Listen</a></li>
@@ -138,14 +138,14 @@ text
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Es ist schwierig ein Schema aus einer XML-Datei zu erzeugen, wenn nicht genügend Informationen über die Datei bekannt sind. Ist das Feld <code>email</code> zwingend notwendig? Dürfen noch weitere Elemente hinzukommen? Ohne die Antworten zu kennen, ist das dazugehörige Schema möglicherweise unvollständig. Das soll im Tutorial aber nicht weiter stören, da wir uns nur die Schemasprache anschauen.
+Die hier aufgezeigte Form des Schemas (mit dem Wurzelelement <code>element</code>) ist in der Praxis eher unüblich. RELAX NG Schemadateien haben als Wurzelelement  oft <code>grammar</code>, das wesentlich flexibler ist. Das wird in Kapitel <a href="#benanntemuster">Benannte Muster</a> eingeführt.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>Die Validierung des Dokuments wird meist in einem XML-Editor durchgeführt (z.B. oXygen XML), in der Regel auch während der Eingabe.
-Man kann mit dem Programm <a href="http://www.thaiopensource.com/relaxng/jing.html">Jing</a> auch auf der Kommandozeile validieren, das ist aber natürlich etwas umständlicher, für automatisierte Workflows aber extrem praktisch:</p>
+<p>Die Validierung des Dokuments wird meist in einem XML-Editor durchgeführt (z.B. <a href="https://www.oxygenxml.com/">oXygen XML</a>), in der Regel auch während der Eingabe.
+Man kann mit dem Programm <a href="http://www.thaiopensource.com/relaxng/jing.html">Jing</a> auch auf der Kommandozeile validieren, das ist  natürlich etwas umständlicher, für automatisierte Workflows jedoch extrem praktisch:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -234,27 +234,23 @@ Da die Reihenfolge der Attribute in XML nicht wichtig ist, können sie bei RELAX
 </div>
 </div>
 <div class="paragraph">
-<p>ist. Für Elemente hingegen gibt es keine Voreinstellung.</p>
+<p>ist. Für Elemente hingegen gibt es keine Voreinstellung.
+Leere Elemente müssen explizit als solche gekennzeichnet sein.</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;!-- nicht erlaubt! --&gt;
-&lt;element name="email"/&gt;</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Leere Elemente müssen explizit als solche gekennzeichnet sein.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;!-- aber das hier ist erlaubt --&gt;
+&lt;element name="email"/&gt;
+
+
+&lt;!-- aber das hier ist erlaubt --&gt;
 &lt;element name="email"&gt;
   &lt;empty /&gt;
 &lt;/element&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Ist hingegen ein Attribut erlaubt, ist das <code>&lt;empty /&gt;</code> nicht notwendig, wird aber implizit angenommen:</p>
+<p>Ist hingegen ein Attribut definiert, ist das <code>&lt;empty /&gt;</code> nicht notwendig  und wird implizit angenommen:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -503,7 +499,7 @@ Erinnerung: das zweite Beispiel oben ist erlaubt, weil ja bei den Attributen die
 </div>
 </div>
 <div class="sect1">
-<h2 id="_benannte_muster">5. Benannte Muster</h2>
+<h2 id="benanntemuster">5. Benannte Muster</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Für alle größeren Schemadateien ist es vorteilhaft, wenn man das Schema in einzelne Teile gliedert. Mit <code>define</code> kann man einen einzelnen Abschnitt definieren und einen Namen zuweisen, auf dem man später mit <code>ref</code> verweisen kann.
@@ -525,7 +521,7 @@ define
 </div>
 </div>
 <div class="paragraph">
-<p>da nun aber bei mehreren solchen Definition unklar ist, wo das Schema »anfängt«, muss eine andere Struktur her.
+<p>da nun aber bei mehreren solchen Definitionen unklar ist, wo das Schema »anfängt«, muss eine andere Struktur her.
 Das Grundgerüst ist nun folgendes:</p>
 </div>
 <code class="sidebar">
@@ -957,7 +953,7 @@ Das Muster oben erlaubt die folgende XML-Datei:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Man könnte vermuten, dass die <code>meta</code>-Elemente hintereinander stehen müssen, weil sie durch <code>zeroOrMore</code> gekennzeichnet sind.</p>
+<p>Man könnte vermuten, dass die <code>meta</code>-Elemente hintereinander stehen müssen, weil sie durch <code>zeroOrMore</code> zusammenhängen.</p>
 </div>
 <h3 id="_gemischter_inhalt_mixed_content" class="discrete">Gemischter Inhalt (mixed content)</h3>
 <div class="paragraph">
@@ -1161,7 +1157,7 @@ combine
 <div class="sectionbody">
 <div class="paragraph">
 <p>Man kann anstelle einer Schemadatei mehrere verwenden.
-DocBook sei hier als Beispiel erwähnt:
+<a href="http://docbook.sourceforge.net/">DocBook</a> sei hier als Beispiel erwähnt:
 DocBook bietet eine <a href="http://docbook.org/xml/5.0/rng/docbookxi.rng">große Schemadatei zum herunterladen</a> an.
 Möchte man eigene Erweiterungen zu DocBook hinzufügen, ändert man nicht diese Hauptdatei, sondern schreibt die Erweiterungen in eine eigene Schemadatei und verwendet die eigene als Schema für das XML-Dokument.</p>
 </div>
@@ -1680,8 +1676,9 @@ ns
 <div class="sect2">
 <h3 id="_namensräume_in_attributen">12.3. Namensräume in Attributen</h3>
 <div class="paragraph">
-<p>Eine Besonderheit bei Namensräumen in Attributen ist meiner Meinung eine Schwachstelle der Definition von XML-Namensräumen.
-Die Attribute eines Elements befinden sich <em>nicht</em> in demselben Namensraum des umschließenden Elements. D.h. im Beispiel von oben</p>
+<p>Eine Besonderheit bei Namensräumen in Attributen ist meiner Meinung nach eine Schwachstelle der Definition von XML-Namensräumen.
+Die Attribute eines Elements befinden sich <em>nicht</em> in demselben Namensraum des umschließenden Elements.
+D.h. im Beispiel von oben</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1831,7 +1828,7 @@ name
 </div>
 </div>
 <div class="paragraph">
-<p>Weil der »verbotene« Namen benutzt wurde.</p>
+<p>Weil der »verbotene« Name benutzt wurde.</p>
 </div>
 <div class="paragraph">
 <p>Die Klasse <code>nsName</code> hat ein Attribut <code>ns</code>, das wie unter Namensräume beschrieben funktioniert:</p>
@@ -1956,7 +1953,7 @@ Hier ist ein Beispiel für das Schema im oXygen XML-Editor</p>
 </div>
 <div class="paragraph">
 <p>RELAX NG hat auch ein <code>div</code>-Element, das keinerlei Bedeutung hat.
-Es dient lediglich zur logischen Trennung für den Anwender und hat auf das Anwenden der Regeln keine Auswirkung.
+Es dient lediglich zur logischen Trennung für den Anwender und hat auf die Ausführung der Regeln keine Auswirkung.
 Man könnte mit einem Namensraum selber eine Trennung vornehmen um ein Schema zu modularisieren.</p>
 </div>
 <code class="sidebar">

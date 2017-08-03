@@ -157,8 +157,9 @@ Nochmals der Hinweis: der Eintrag `xmlns="http://relaxng.org/ns/structure/1.0"` 
 
 === Namensräume in Attributen ===
 
-Eine Besonderheit bei Namensräumen in Attributen ist meiner Meinung eine Schwachstelle der Definition von XML-Namensräumen.
-Die Attribute eines Elements befinden sich _nicht_ in demselben Namensraum des umschließenden Elements. D.h. im Beispiel von oben
+Eine Besonderheit bei Namensräumen in Attributen ist meiner Meinung nach eine Schwachstelle der Definition von XML-Namensräumen.
+Die Attribute eines Elements befinden sich _nicht_ in demselben Namensraum des umschließenden Elements.
+D.h. im Beispiel von oben
 
 [source, xml]
 -------------------------------------------------------------------------------
