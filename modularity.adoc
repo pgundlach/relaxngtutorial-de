@@ -1,0 +1,282 @@
+// https://creativecommons.org/licenses/by-sa/3.0/deed.de
+== Mehrere Schemadateien ==
+
+Man kann anstelle einer Schemadatei mehrere verwenden.
+DocBook sei hier als Beispiel erwähnt:
+DocBook bietet eine http://docbook.org/xml/5.0/rng/docbookxi.rng[große Schemadatei zum herunterladen] an.
+Möchte man eigene Erweiterungen zu DocBook hinzufügen, ändert man nicht diese Hauptdatei, sondern schreibt die Erweiterungen in eine eigene Schemadatei und verwendet die eigene als Schema für das XML-Dokument.
+
+
+Es gibt zwei Arten der Referenzierung: `externalRef` und `include`.
+Die erste Variante bietet sich an, wenn man kleinere Definitionen hat, die man aus verschiedenen Hauptdateien einbindet und die zweite Variante bietet sich in Situationen an wie im DocBook-Beispiel beschrieben.
+
+
+=== Referenz auf externe Muster ===
+
+Wenn wir eine einfache Datei haben (`card.rng`):
+
+[source, xml]
+-------------------------------------------------------------------------------
+<grammar  xmlns="http://relaxng.org/ns/structure/1.0">
+  <start>
+    <ref name="card"/>
+  </start>
+
+  <define name="card">
+    <element name="card"><empty/></element>
+  </define>
+</grammar>
+-------------------------------------------------------------------------------
+
+kann man auf das Startelement per `externalRef` zugreifen:
+
+++++
+<code class="sidebar">
+externalRef
+</code>
+++++
+[source, xml]
+-------------------------------------------------------------------------------
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+
+  <start>
+    <element name="addressBook">
+      <zeroOrMore>
+        <externalRef href="card.rng"/>
+      </zeroOrMore>
+    </element>
+  </start>
+
+</grammar>
+-------------------------------------------------------------------------------
+
+Man kann dieses Muster auch bei `choice` benutzen:
+
+[source, xml]
+-------------------------------------------------------------------------------
+<choice>
+  <externalRef href="pattern1.rng"/>
+  <externalRef href="pattern2.rng"/>
+</choice>
+-------------------------------------------------------------------------------
+
+
+Der Fantasie sind hier kaum Grenzen gesetzt. In der Praxis findet sich jedoch etwas häufiger der folgende Mechanismus:
+
+=== Zusammenführen von Schemadateien ===
+
+Mit dem `include` Befehl lassen sich Schemadateien zusammenführen.
+
+TIP: Das `include`-Element hat zwei verschiedene Semantiken, je nach dem wie man es benutzt. In diesem Abschnitt wird `include` benutzt, um Definitionen zu ergänzen (`combine`), im nächsten Abschnitt wird `include` benutzt, um Definitionen zu ersetzen. Ein feiner, aber sehr wichtiger Unterschied!
+
+
+Es sei eine Datei gegeben, die ein Adressbuch definiert (`addressbook.rng`):
+
+
+[source, xml]
+-------------------------------------------------------------------------------
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+
+  <start>
+    <element name="addressBook">
+      <zeroOrMore>
+        <ref name="card" />
+      </zeroOrMore>
+    </element>
+  </start>
+
+
+  <define name="card">
+    <element name="card">
+      <ref name="card.attributes" />
+    </element>
+  </define>
+
+  <define name="card.attributes">
+    <attribute name="name"/>
+    <attribute name="email"/>
+  </define>
+
+</grammar>
+-------------------------------------------------------------------------------
+
+
+Dieses Schema sollte nach dem Studium der letzten Abschnitte leicht zu lesen sein.
+Es erlaubt eine Datei der folgenden Form:
+
+
+[source, xml]
+-------------------------------------------------------------------------------
+<addressBook>
+  <card name="..." email="..." />
+  <card name="..." email="..." />
+  ...
+</addressBook>
+-------------------------------------------------------------------------------
+
+Möchten wir die Definitionen oben erweitern, fangen wir am besten mit der trivialen Datei an (`schema.rng`):
+
+++++
+<code class="sidebar">
+include
+</code>
+++++
+[source, xml]
+-------------------------------------------------------------------------------
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+
+  <include href="addressbook.rng"/>
+
+</grammar>
+-------------------------------------------------------------------------------
+
+
+In diesem Zustand ist es egal, ob gegen `schema.rng` oder gegen `addressbook.rng` validiert wird, weil der Inhalt identisch ist.
+Erweitern wir nun die Definitionen aus `addressbook.rng` in der neuen Datei, dann muss ausschließlich gegen die neue Datei validiert werden, sonst werden die Erweiterungen nicht beachtet.
+
+Die erste Erweiterung besteht darin, dass ein optionales Attribut `note` in einem Eintrag benutzt werden darf:
+
+
+
+[source, xml]
+-------------------------------------------------------------------------------
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+
+  <include href="addressbook.rng"/>
+
+  <define name="card.attributes" combine="interleave">
+    <optional>
+      <attribute name="note"/>
+    </optional>
+  </define>
+
+</grammar>
+-------------------------------------------------------------------------------
+
+Im letzten Abschnitt wurde erwähnt, dass Attribute mit `choice="interleave"` verbunden werden sollten.
+
+
+Damit ist nun ein optionales Attribut `note` erlaubt:
+
+[source, xml]
+-------------------------------------------------------------------------------
+<addressBook>
+  <card name="..." email="..." />
+  <card name="..." email="..." note="..." />
+  ...
+</addressBook>
+-------------------------------------------------------------------------------
+
+
+=== Ersetzen von Definitionen ===
+
+
+Schreibt man die neuen Definitionen _in_ das `include`-Element, so werden die alten Definitionen überschrieben. Das ist ein Unterschied zu der vorherigen Benutzung von `include`.
+
+Es sei wieder die Datei gegeben, die ein Adressbuch definiert (`addressbook.rng`). Unsere neue `schema.rng` ist nun wie folgt:
+
+[source, xml]
+-------------------------------------------------------------------------------
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+
+  <include href="addressbook.rng">
+    <define name="card.attributes">
+      <attribute name="familyName"/>
+      <attribute name="givenName"/>
+    </define>
+  </include>
+
+</grammar>
+-------------------------------------------------------------------------------
+
+Hier steht die Definition innerhalb des `include`-Elements. Daher wird die Definition der erlaubten Attribute überschrieben.
+Eine gültige XML-Datei hat nun die Form:
+
+
+[source, xml]
+-------------------------------------------------------------------------------
+<addressBook>
+  <card familyName="..." givenName="..."/>
+  <card familyName="..." givenName="..."/>
+</addressBook>
+-------------------------------------------------------------------------------
+
+Tipp: Die `include`-Anweisung darf auch das `start`-Element enthalten, das dann das `start`-Element der eingebundenen Datei überschreibt.
+
+
+=== Platzhalter ===
+
+
+Es gibt ein Element `notAllowed`, das als Platzhalter für Erweiterungen dienen kann.
+
+Im einfachsten Fall wird es so benutzt:
+
+
+++++
+<code class="sidebar">
+notAllowed
+</code>
+++++
+[source, xml]
+-------------------------------------------------------------------------------
+<element name="einElement">
+  <notAllowed/>
+</element>
+-------------------------------------------------------------------------------
+
+Wie der Name schon sagt, ist ein Element, das `notAllowed` enthält, in einer XML-Datei verboten.
+
+Es bietet sich aber folgendes Muster an, Erweiterungen einer Auswahlliste zu ermöglichen:
+
+[source, xml]
+-------------------------------------------------------------------------------
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+
+  <start>
+    <element name="auswahlliste">
+      <zeroOrMore>
+        <ref name="auswahl"/>
+      </zeroOrMore>
+    </element>
+  </start>
+
+
+  <define name="auswahl">
+    <element name="auswahl">
+      <choice>
+        <element name="eins"><empty /></element>
+        <element name="zwei"><empty /></element>
+        <ref name="auswahl.extras"/>
+      </choice>
+    </element>
+  </define>
+
+  <define name="auswahl.extras">
+    <notAllowed/>
+  </define>
+
+</grammar>
+-------------------------------------------------------------------------------
+
+Ein `notAllowed`-Element als Teil einer Auswahl (`choice`) wird einfach ignoriert.
+Nun kann man die Auswahlliste in einer eigenen Datei erweitern:
+
+
+
+[source, xml]
+-------------------------------------------------------------------------------
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+
+  <include href="auswahlliste.rng"/>
+
+  <define name="auswahl.extras" combine="choice">
+    <element name="drei">
+      <empty />
+    </element>
+  </define>
+
+</grammar>
+-------------------------------------------------------------------------------
+
+// Ende der Datei
+

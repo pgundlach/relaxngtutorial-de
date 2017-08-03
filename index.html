@@ -32,6 +32,7 @@
 <li><a href="#_listen">8. Listen</a></li>
 <li><a href="#_verschachteln_von_elementen_interleave">9. Verschachteln von Elementen (interleave)</a></li>
 <li><a href="#_mehrfachdefinitionen_combine">10. Mehrfachdefinitionen (combine )</a></li>
+<li><a href="#_mehrere_schemadateien">11. Mehrere Schemadateien</a></li>
 </ul>
 </div>
 </div>
@@ -1152,11 +1153,305 @@ combine
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_mehrere_schemadateien">11. Mehrere Schemadateien</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Man kann anstelle einer Schemadatei mehrere verwenden.
+DocBook sei hier als Beispiel erwähnt:
+DocBook bietet eine <a href="http://docbook.org/xml/5.0/rng/docbookxi.rng">große Schemadatei zum herunterladen</a> an.
+Möchte man eigene Erweiterungen zu DocBook hinzufügen, ändert man nicht diese Hauptdatei, sondern schreibt die Erweiterungen in eine eigene Schemadatei und verwendet die eigene als Schema für das XML-Dokument.</p>
+</div>
+<div class="paragraph">
+<p>Es gibt zwei Arten der Referenzierung: <code>externalRef</code> und <code>include</code>.
+Die erste Variante bietet sich an, wenn man kleinere Definitionen hat, die man aus verschiedenen Hauptdateien einbindet und die zweite Variante bietet sich in Situationen an wie im DocBook-Beispiel beschrieben.</p>
+</div>
+<div class="sect2">
+<h3 id="_referenz_auf_externe_muster">11.1. Referenz auf externe Muster</h3>
+<div class="paragraph">
+<p>Wenn wir eine einfache Datei haben (<code>card.rng</code>):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;grammar  xmlns="http://relaxng.org/ns/structure/1.0"&gt;
+  &lt;start&gt;
+    &lt;ref name="card"/&gt;
+  &lt;/start&gt;
+
+  &lt;define name="card"&gt;
+    &lt;element name="card"&gt;&lt;empty/&gt;&lt;/element&gt;
+  &lt;/define&gt;
+&lt;/grammar&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>kann man auf das Startelement per <code>externalRef</code> zugreifen:</p>
+</div>
+<code class="sidebar">
+externalRef
+</code>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;grammar xmlns="http://relaxng.org/ns/structure/1.0"&gt;
+
+  &lt;start&gt;
+    &lt;element name="addressBook"&gt;
+      &lt;zeroOrMore&gt;
+        &lt;externalRef href="card.rng"/&gt;
+      &lt;/zeroOrMore&gt;
+    &lt;/element&gt;
+  &lt;/start&gt;
+
+&lt;/grammar&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Man kann dieses Muster auch bei <code>choice</code> benutzen:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;choice&gt;
+  &lt;externalRef href="pattern1.rng"/&gt;
+  &lt;externalRef href="pattern2.rng"/&gt;
+&lt;/choice&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Der Fantasie sind hier kaum Grenzen gesetzt. In der Praxis findet sich jedoch etwas häufiger der folgende Mechanismus:</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_zusammenführen_von_schemadateien">11.2. Zusammenführen von Schemadateien</h3>
+<div class="paragraph">
+<p>Mit dem <code>include</code> Befehl lassen sich Schemadateien zusammenführen.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Das <code>include</code>-Element hat zwei verschiedene Semantiken, je nach dem wie man es benutzt. In diesem Abschnitt wird <code>include</code> benutzt, um Definitionen zu ergänzen (<code>combine</code>), im nächsten Abschnitt wird <code>include</code> benutzt, um Definitionen zu ersetzen. Ein feiner, aber sehr wichtiger Unterschied!
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Es sei eine Datei gegeben, die ein Adressbuch definiert (<code>addressbook.rng</code>):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;grammar xmlns="http://relaxng.org/ns/structure/1.0"&gt;
+
+  &lt;start&gt;
+    &lt;element name="addressBook"&gt;
+      &lt;zeroOrMore&gt;
+        &lt;ref name="card" /&gt;
+      &lt;/zeroOrMore&gt;
+    &lt;/element&gt;
+  &lt;/start&gt;
+
+
+  &lt;define name="card"&gt;
+    &lt;element name="card"&gt;
+      &lt;ref name="card.attributes" /&gt;
+    &lt;/element&gt;
+  &lt;/define&gt;
+
+  &lt;define name="card.attributes"&gt;
+    &lt;attribute name="name"/&gt;
+    &lt;attribute name="email"/&gt;
+  &lt;/define&gt;
+
+&lt;/grammar&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Dieses Schema sollte nach dem Studium der letzten Abschnitte leicht zu lesen sein.
+Es erlaubt eine Datei der folgenden Form:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;addressBook&gt;
+  &lt;card name="..." email="..." /&gt;
+  &lt;card name="..." email="..." /&gt;
+  ...
+&lt;/addressBook&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Möchten wir die Definitionen oben erweitern, fangen wir am besten mit der trivialen Datei an (<code>schema.rng</code>):</p>
+</div>
+<code class="sidebar">
+include
+</code>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;grammar xmlns="http://relaxng.org/ns/structure/1.0"&gt;
+
+  &lt;include href="addressbook.rng"/&gt;
+
+&lt;/grammar&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In diesem Zustand ist es egal, ob gegen <code>schema.rng</code> oder gegen <code>addressbook.rng</code> validiert wird, weil der Inhalt identisch ist.
+Erweitern wir nun die Definitionen aus <code>addressbook.rng</code> in der neuen Datei, dann muss ausschließlich gegen die neue Datei validiert werden, sonst werden die Erweiterungen nicht beachtet.</p>
+</div>
+<div class="paragraph">
+<p>Die erste Erweiterung besteht darin, dass ein optionales Attribut <code>note</code> in einem Eintrag benutzt werden darf:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;grammar xmlns="http://relaxng.org/ns/structure/1.0"&gt;
+
+  &lt;include href="addressbook.rng"/&gt;
+
+  &lt;define name="card.attributes" combine="interleave"&gt;
+    &lt;optional&gt;
+      &lt;attribute name="note"/&gt;
+    &lt;/optional&gt;
+  &lt;/define&gt;
+
+&lt;/grammar&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Im letzten Abschnitt wurde erwähnt, dass Attribute mit <code>choice="interleave"</code> verbunden werden sollten.</p>
+</div>
+<div class="paragraph">
+<p>Damit ist nun ein optionales Attribut <code>note</code> erlaubt:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;addressBook&gt;
+  &lt;card name="..." email="..." /&gt;
+  &lt;card name="..." email="..." note="..." /&gt;
+  ...
+&lt;/addressBook&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ersetzen_von_definitionen">11.3. Ersetzen von Definitionen</h3>
+<div class="paragraph">
+<p>Schreibt man die neuen Definitionen <em>in</em> das <code>include</code>-Element, so werden die alten Definitionen überschrieben. Das ist ein Unterschied zu der vorherigen Benutzung von <code>include</code>.</p>
+</div>
+<div class="paragraph">
+<p>Es sei wieder die Datei gegeben, die ein Adressbuch definiert (<code>addressbook.rng</code>). Unsere neue <code>schema.rng</code> ist nun wie folgt:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;grammar xmlns="http://relaxng.org/ns/structure/1.0"&gt;
+
+  &lt;include href="addressbook.rng"&gt;
+    &lt;define name="card.attributes"&gt;
+      &lt;attribute name="familyName"/&gt;
+      &lt;attribute name="givenName"/&gt;
+    &lt;/define&gt;
+  &lt;/include&gt;
+
+&lt;/grammar&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Hier steht die Definition innerhalb des <code>include</code>-Elements. Daher wird die Definition der erlaubten Attribute überschrieben.
+Eine gültige XML-Datei hat nun die Form:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;addressBook&gt;
+  &lt;card familyName="..." givenName="..."/&gt;
+  &lt;card familyName="..." givenName="..."/&gt;
+&lt;/addressBook&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Tipp: Die <code>include</code>-Anweisung darf auch das <code>start</code>-Element enthalten, das dann das <code>start</code>-Element der eingebundenen Datei überschreibt.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_platzhalter">11.4. Platzhalter</h3>
+<div class="paragraph">
+<p>Es gibt ein Element <code>notAllowed</code>, das als Platzhalter für Erweiterungen dienen kann.</p>
+</div>
+<div class="paragraph">
+<p>Im einfachsten Fall wird es so benutzt:</p>
+</div>
+<code class="sidebar">
+notAllowed
+</code>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;element name="einElement"&gt;
+  &lt;notAllowed/&gt;
+&lt;/element&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Wie der Name schon sagt, ist ein Element, das <code>notAllowed</code> enthält, in einer XML-Datei verboten.</p>
+</div>
+<div class="paragraph">
+<p>Es bietet sich aber folgendes Muster an, Erweiterungen einer Auswahlliste zu ermöglichen:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;grammar xmlns="http://relaxng.org/ns/structure/1.0"&gt;
+
+  &lt;start&gt;
+    &lt;element name="auswahlliste"&gt;
+      &lt;zeroOrMore&gt;
+        &lt;ref name="auswahl"/&gt;
+      &lt;/zeroOrMore&gt;
+    &lt;/element&gt;
+  &lt;/start&gt;
+
+
+  &lt;define name="auswahl"&gt;
+    &lt;element name="auswahl"&gt;
+      &lt;choice&gt;
+        &lt;element name="eins"&gt;&lt;empty /&gt;&lt;/element&gt;
+        &lt;element name="zwei"&gt;&lt;empty /&gt;&lt;/element&gt;
+        &lt;ref name="auswahl.extras"/&gt;
+      &lt;/choice&gt;
+    &lt;/element&gt;
+  &lt;/define&gt;
+
+  &lt;define name="auswahl.extras"&gt;
+    &lt;notAllowed/&gt;
+  &lt;/define&gt;
+
+&lt;/grammar&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Ein <code>notAllowed</code>-Element als Teil einer Auswahl (<code>choice</code>) wird einfach ignoriert.
+Nun kann man die Auswahlliste in einer eigenen Datei erweitern:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;grammar xmlns="http://relaxng.org/ns/structure/1.0"&gt;
+
+  &lt;include href="auswahlliste.rng"/&gt;
+
+  &lt;define name="auswahl.extras" combine="choice"&gt;
+    &lt;element name="drei"&gt;
+      &lt;empty /&gt;
+    &lt;/element&gt;
+  &lt;/define&gt;
+
+&lt;/grammar&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 0.1<br>
-Last updated 2017-08-03 09:08:59 CEST
+Last updated 2017-08-03 10:43:28 CEST
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/github.min.css">
