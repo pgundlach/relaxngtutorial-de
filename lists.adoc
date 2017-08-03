@@ -1,0 +1,63 @@
+// https://creativecommons.org/licenses/by-sa/3.0/deed.de
+== Listen ==
+
+Dieses Muster passt auf eine durch Leerzeichen (Whitespace) separierte Liste von Werten.
+Ein einfaches Beispiel erklärt das wohl am besten:
+
+++++
+<code class="sidebar">
+list
+</code>
+++++
+[source, xml]
+-------------------------------------------------------------------------------
+<element name="vector">
+  <list>
+    <data type="float"/>
+    <data type="float"/>
+  </list>
+</element>
+-------------------------------------------------------------------------------
+
+Auf dieses Schema passt z.B. folgendes XML-Dokument:
+
+
+[source, xml]
+-------------------------------------------------------------------------------
+<vector>
+  1.2
+  3.2
+</vector>
+-------------------------------------------------------------------------------
+
+Wichtig ist nur, dass die Werte durch Leerzeichen oder ähnliches getrennt werden.
+
+Die folgenden beiden Definitionen zeigen die Anwendungsmöglichkeiten:
+
+[source, xml]
+-------------------------------------------------------------------------------
+<element name="vector">
+  <list>
+    <oneOrMore>
+      <data type="double"/>
+    </oneOrMore>
+  </list>
+</element>
+
+<element name="path">
+  <list>
+    <oneOrMore>
+      <data type="double"/>
+      <data type="double"/>
+    </oneOrMore>
+  </list>
+</element>
+-------------------------------------------------------------------------------
+
+
+Im ersten Fall sind ein oder mehrere Werte vom Typ `double` erlaubt, im zweiten Fall sind eine gerade Anzahl der Werte erlaubt.
+
+In der Praxis spielen diese Listen vermutlich nicht so eine große Rolle.
+
+// Ende der Datei
+

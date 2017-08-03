@@ -1,8 +1,9 @@
 // https://creativecommons.org/licenses/by-sa/3.0/deed.de
-= RelaxNG Tutorial
+= RELAX NG Tutorial
 Patrick Gundlach <gundlach@speedata.de>
 v0.1, 2017-08-02
 :sectnums:
+:toclevels: 1
 :lang: de
 :toc:
 :figure-caption: Abbildung
@@ -23,4 +24,7 @@ include::choice.adoc[]
 include::namedpattern.adoc[]
 include::datatypes.adoc[]
 include::enumerations.adoc[]
+include::lists.adoc[]
+include::interleave.adoc[]
+include::kombinationen.adoc[]
 

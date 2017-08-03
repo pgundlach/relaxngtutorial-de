@@ -110,7 +110,7 @@ attribute
 </element>
 -------------------------------------------------------------------------------
 
-TIP: Da die Reihenfolge der Attribute in XML nicht wichtig ist, können sie bei RelaxNG auch in beliebiger Reihenfolge festgelegt werden. Bei Elementen hingegen ist die Reihenfolge wesentlich.
+TIP: Da die Reihenfolge der Attribute in XML nicht wichtig ist, können sie bei RELAX NG auch in beliebiger Reihenfolge festgelegt werden. Bei Elementen hingegen ist die Reihenfolge wesentlich.
 
 
 Es gibt einen Unterschied zwischen den Mustern für Attribute und Elemente. Die Voreinstellung für den Inhalt von Attributen ist `<text />`. Daraus folgt, dass
@@ -170,9 +170,9 @@ ist dasselbe wie
 
 
 [discrete]
-=== Namensraum ===
+=== Namensraum des Schemas ===
 
-Der Namensraum von RelaxNG ist `\http://relaxng.org/ns/structure/1.0`. Mit dem »Attribut«
+Der Namensraum von RELAX NG ist `\http://relaxng.org/ns/structure/1.0`. Mit dem »Attribut«
 
 [source, xml]
 -------------------------------------------------------------------------------

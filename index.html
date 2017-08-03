@@ -6,13 +6,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.5">
 <meta name="author" content="Patrick Gundlach">
-<title>RelaxNG Tutorial</title>
+<title>RELAX NG Tutorial</title>
 <link rel="stylesheet" href="css/relaxng.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
 </head>
 <body class="article">
 <div id="header">
-<h1>RelaxNG Tutorial</h1>
+<h1>RELAX NG Tutorial</h1>
 <div class="details">
 <span id="author" class="author">Patrick Gundlach</span><br>
 <span id="email" class="email"><a href="mailto:gundlach@speedata.de">gundlach@speedata.de</a></span><br>
@@ -29,6 +29,9 @@
 <li><a href="#_benannte_muster">5. Benannte Muster</a></li>
 <li><a href="#_datentypen">6. Datentypen</a></li>
 <li><a href="#_vorbelegte_werte">7. Vorbelegte Werte</a></li>
+<li><a href="#_listen">8. Listen</a></li>
+<li><a href="#_verschachteln_von_elementen_interleave">9. Verschachteln von Elementen (interleave)</a></li>
+<li><a href="#_mehrfachdefinitionen_combine">10. Mehrfachdefinitionen (combine )</a></li>
 </ul>
 </div>
 </div>
@@ -36,8 +39,8 @@
 <div id="preamble">
 <div class="sectionbody">
 <h2 id="_vorwort" class="discrete">Vorwort</h2>
-<div class="paragraph foo">
-<p>RelaxNG (gesprochen: relaxing) ist eine Schemasprache für XML, mit der man den Aufbau eines XML-Dokuments beschreiben kann.
+<div class="paragraph">
+<p>RELAX NG (gesprochen: relaxing) ist eine Schemasprache für XML, mit der man den Aufbau eines XML-Dokuments beschreiben kann.
 Hat man ein solches Schema erstellt, dann kann man leicht überprüfen, ob ein XML-Dokument den Anforderungen entspricht.
 Beispielsweise kann man in einem Schema festlegen, dass ein Adressbucheintrag genau einen Vornamen und einen Nachnamen enthalten muss.
 Das hat zwei Vorteile:</p>
@@ -53,12 +56,12 @@ Das hat zwei Vorteile:</p>
 </ol>
 </div>
 <div class="paragraph">
-<p>Die Schemasprache RelaxNG eignet sich sehr gut für diese Aufgabe und wird von vielen XML-Editoren unterstützt.
-RelaxNG kommt in zwei Arten daher, die funktional identisch sind.
+<p>Die Schemasprache RELAX NG eignet sich sehr gut für diese Aufgabe und wird von vielen XML-Editoren unterstützt.
+RELAX NG kommt in zwei Arten daher, die funktional identisch sind.
 Einmal als »kompakte Syntax« und einmal als »XML-Syntax«. In diesem Dokument wird nur die XML-Syntax beschrieben.</p>
 </div>
 <div class="paragraph">
-<p>Dieses Tutorial lehnt sich an das »offizielle« Tutorial an, das auf der <a href="http://relaxng.org/tutorial-20030326.html">RelaxNG-Webseite zur Verfügung steht</a>.
+<p>Dieses Tutorial lehnt sich an das »offizielle« Tutorial an, das auf der <a href="http://relaxng.org/tutorial-20030326.html">RELAX NG-Webseite zur Verfügung steht</a>.
 Es ist keine direkte Übersetzung.
 Hier und da wurden Änderungen vorgenommen, um den Inhalt leichter zu vermitteln.
 Hinweise auf nicht mehr übliche Techniken wurden entfernt (TREX, DTD, &#8230;&#8203;)</p>
@@ -203,7 +206,7 @@ attribute
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-Da die Reihenfolge der Attribute in XML nicht wichtig ist, können sie bei RelaxNG auch in beliebiger Reihenfolge festgelegt werden. Bei Elementen hingegen ist die Reihenfolge wesentlich.
+Da die Reihenfolge der Attribute in XML nicht wichtig ist, können sie bei RELAX NG auch in beliebiger Reihenfolge festgelegt werden. Bei Elementen hingegen ist die Reihenfolge wesentlich.
 </td>
 </tr>
 </table>
@@ -267,9 +270,9 @@ Da die Reihenfolge der Attribute in XML nicht wichtig ist, können sie bei Relax
 &lt;/element&gt;</code></pre>
 </div>
 </div>
-<h3 id="_namensraum" class="discrete">Namensraum</h3>
+<h3 id="_namensraum_des_schemas" class="discrete">Namensraum des Schemas</h3>
 <div class="paragraph">
-<p>Der Namensraum von RelaxNG ist <code>http://relaxng.org/ns/structure/1.0</code>. Mit dem »Attribut«</p>
+<p>Der Namensraum von RELAX NG ist <code>http://relaxng.org/ns/structure/1.0</code>. Mit dem »Attribut«</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -624,7 +627,7 @@ Manchmal ist es jedoch wünschenswert, nur bestimmte Werte zuzulassen, beispiels
 Der Anwender soll genau vier Ziffern in das Feld schreiben dürfen, die ggf. noch innerhalb eines Wertebereiches liegen.</p>
 </div>
 <div class="paragraph">
-<p>RelaxNG selber kennt keine Datentypen, kann aber »externe« Datentypen einbinden.
+<p>RELAX NG selber kennt keine Datentypen, kann aber »externe« Datentypen einbinden.
 Die wohl am häufigsten benutzte Sammlung an Datentypen hat den URI <code>http://www.w3.org/2001/XMLSchema-datatypes</code>. Dieser Identifier wird im Attribut <code>datatypeLibrary</code> angegeben, das man am einfachsten am Wurzelelement mit angibt:</p>
 </div>
 <code class="sidebar">
@@ -704,7 +707,7 @@ Die Beschreibung der eingebauten Typen ist unter <code><a href="https://www.w3.o
 </ul>
 </div>
 <div class="paragraph">
-<p>Die beiden Parameter <code>enumeration</code> und <code>whiteSpace</code> sind laut den <a href="http://relaxng.org/xsd-20010907.html">Richtlinien für Datentypen in RelaxNG</a> nicht erlaubt.</p>
+<p>Die beiden Parameter <code>enumeration</code> und <code>whiteSpace</code> sind laut den <a href="http://relaxng.org/xsd-20010907.html">Richtlinien für Datentypen in RELAX NG</a> nicht erlaubt.</p>
 </div>
 <div class="paragraph">
 <p>Diese Parameter werden als Kindelement von <code>data</code> angegeben</p>
@@ -796,11 +799,364 @@ Ist keine datatypeLibrary festgelegt (siehe das vorherige Kapitel), dann werden 
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_listen">8. Listen</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Dieses Muster passt auf eine durch Leerzeichen (Whitespace) separierte Liste von Werten.
+Ein einfaches Beispiel erklärt das wohl am besten:</p>
+</div>
+<code class="sidebar">
+list
+</code>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;element name="vector"&gt;
+  &lt;list&gt;
+    &lt;data type="float"/&gt;
+    &lt;data type="float"/&gt;
+  &lt;/list&gt;
+&lt;/element&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Auf dieses Schema passt z.B. folgendes XML-Dokument:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;vector&gt;
+  1.2
+  3.2
+&lt;/vector&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Wichtig ist nur, dass die Werte durch Leerzeichen oder ähnliches getrennt werden.</p>
+</div>
+<div class="paragraph">
+<p>Die folgenden beiden Definitionen zeigen die Anwendungsmöglichkeiten:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;element name="vector"&gt;
+  &lt;list&gt;
+    &lt;oneOrMore&gt;
+      &lt;data type="double"/&gt;
+    &lt;/oneOrMore&gt;
+  &lt;/list&gt;
+&lt;/element&gt;
+
+&lt;element name="path"&gt;
+  &lt;list&gt;
+    &lt;oneOrMore&gt;
+      &lt;data type="double"/&gt;
+      &lt;data type="double"/&gt;
+    &lt;/oneOrMore&gt;
+  &lt;/list&gt;
+&lt;/element&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Im ersten Fall sind ein oder mehrere Werte vom Typ <code>double</code> erlaubt, im zweiten Fall sind eine gerade Anzahl der Werte erlaubt.</p>
+</div>
+<div class="paragraph">
+<p>In der Praxis spielen diese Listen vermutlich nicht so eine große Rolle.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_verschachteln_von_elementen_interleave">9. Verschachteln von Elementen (interleave)</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Das Interleave-Muster erlaubt es,  Kindelemente in beliebiger Reihenfolge auftreten zu lassen.
+Im folgenden Beispiel können die Kindelemente von <code>card</code> in der Reihenfolge <code>email</code> und dann <code>name</code> oder andersrum auftreten.</p>
+</div>
+<code class="sidebar">
+interleave
+</code>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;element name="addressBook"&gt;
+  &lt;zeroOrMore&gt;
+    &lt;element name="card"&gt;
+      &lt;interleave&gt;
+    	 &lt;element name="name"&gt;
+    	   &lt;text/&gt;
+    	 &lt;/element&gt;
+    	 &lt;element name="email"&gt;
+    	   &lt;text/&gt;
+    	 &lt;/element&gt;
+      &lt;/interleave&gt;
+    &lt;/element&gt;
+  &lt;/zeroOrMore&gt;
+&lt;/element&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Mit Interleave sind aber weitaus mächtigere Konstrukte möglich.
+Als Beispiel dient der Kopf einer HTML-Seite (Elementname <code>head</code>).
+In dem Kopf sind verschiedene Regeln zu beachten:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Es ist ein Vorkommen der Elemente <code>title</code> und <code>base</code> erlaubt, letzteres ist jedoch optional.</p>
+</li>
+<li>
+<p>Die Elemente <code>style</code>, <code>script</code>, <code>link</code> und <code>meta</code> dürfen mehrfach vorkommen, sind aber auch optional.</p>
+</li>
+<li>
+<p>Die Reihenfolge der Elemente ist beliebig.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Unter der Annahme, dass es für die <code>&lt;ref name="&#8230;&#8203;"&gt;</code> passende Definitionen gibt, kann man die Regel für den HTML-Kopf mit dem folgenden Muster beschreiben:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;define name="head"&gt;
+  &lt;element name="head"&gt;
+    &lt;interleave&gt;
+      &lt;ref name="title"/&gt;
+      &lt;optional&gt;
+        &lt;ref name="base"/&gt;
+      &lt;/optional&gt;
+      &lt;zeroOrMore&gt;
+        &lt;ref name="style"/&gt;
+      &lt;/zeroOrMore&gt;
+      &lt;zeroOrMore&gt;
+        &lt;ref name="script"/&gt;
+      &lt;/zeroOrMore&gt;
+      &lt;zeroOrMore&gt;
+        &lt;ref name="link"/&gt;
+      &lt;/zeroOrMore&gt;
+      &lt;zeroOrMore&gt;
+        &lt;ref name="meta"/&gt;
+      &lt;/zeroOrMore&gt;
+    &lt;/interleave&gt;
+  &lt;/element&gt;
+&lt;/define&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Hier ist eine Eigenschaft zu erwähnen, die vielleicht nicht unbedingt intuitiv ist.
+Das Muster oben erlaubt die folgende XML-Datei:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;head&gt;
+  &lt;meta  ... /&gt;
+  &lt;title ... /&gt;
+  &lt;meta  ... /&gt;
+&lt;/head&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Man könnte vermuten, dass die <code>meta</code>-Elemente hintereinander stehen müssen, weil sie durch <code>zeroOrMore</code> gekennzeichnet sind.</p>
+</div>
+<h3 id="_gemischter_inhalt_mixed_content" class="discrete">Gemischter Inhalt (mixed content)</h3>
+<div class="paragraph">
+<p>Für einen Sonderfall des Interleave-Musters gibt es ein extra Element. Wenn ein Muster p auch Text beinhalten darf (mixed content), dann kann man</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;interleave&gt; &lt;text/&gt; p &lt;/interleave&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>durch</p>
+</div>
+<code class="sidebar">
+mixed
+</code>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;mixed&gt; p &lt;/mixed&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>abkürzen.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_mehrfachdefinitionen_combine">10. Mehrfachdefinitionen (combine )</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Ein Schema kann mehrere Definitionen (<code>define</code>) mit demselben Namen enthalten.
+Dann muss allerdings beschrieben werden, was passiert, wenn mehrere Definitionen zu einer zusammengeführt werden.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Warum sollte man mehrere Definitionen mit demselben Namen haben? Das spielt dann eine wichtige Rolle, wenn man mehrere Schemadateien hat und diese kombinieren will. Mehr dazu im nächsten Abschnitt.
+</td>
+</tr>
+</table>
+</div>
+<code class="sidebar">
+combine
+</code>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;define name="inline" combine="choice"&gt;
+  &lt;element name="bold"&gt;
+    &lt;ref name="inline"/&gt;
+  &lt;/element&gt;
+&lt;/define&gt;
+
+&lt;define name="inline" combine="choice"&gt;
+  &lt;element name="italic"&gt;
+    &lt;ref name="inline"/&gt;
+  &lt;/element&gt;
+&lt;/define&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>ist dasselbe wie</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;define name="inline"&gt;
+  &lt;choice&gt;
+    &lt;element name="bold"&gt;
+      &lt;ref name="inline"/&gt;
+    &lt;/element&gt;
+    &lt;element name="italic"&gt;
+      &lt;ref name="inline"/&gt;
+    &lt;/element&gt;
+  &lt;/choice&gt;
+&lt;/define&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Für Attribute wird in der Regel <code>combine="interleave"</code> benutzt:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;grammar xmlns="http://relaxng.org/ns/structure/1.0"&gt;
+
+  &lt;start&gt;
+    &lt;element name="addressBook"&gt;
+      &lt;zeroOrMore&gt;
+        &lt;element name="card"&gt;
+          &lt;ref name="card.attlist"/&gt;
+        &lt;/element&gt;
+      &lt;/zeroOrMore&gt;
+    &lt;/element&gt;
+  &lt;/start&gt;
+
+  &lt;define name="card.attlist" combine="interleave"&gt;
+    &lt;attribute name="name"&gt;
+      &lt;text/&gt;
+    &lt;/attribute&gt;
+  &lt;/define&gt;
+
+  &lt;define name="card.attlist" combine="interleave"&gt;
+    &lt;attribute name="email"&gt;
+      &lt;text/&gt;
+    &lt;/attribute&gt;
+  &lt;/define&gt;
+
+&lt;/grammar&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>ist dasselbe wie</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;grammar xmlns="http://relaxng.org/ns/structure/1.0"&gt;
+
+  &lt;start&gt;
+    &lt;element name="addressBook"&gt;
+      &lt;zeroOrMore&gt;
+        &lt;element name="card"&gt;
+          &lt;ref name="card.attlist"/&gt;
+        &lt;/element&gt;
+      &lt;/zeroOrMore&gt;
+    &lt;/element&gt;
+  &lt;/start&gt;
+
+  &lt;define name="card.attlist"&gt;
+    &lt;interleave&gt;
+      &lt;attribute name="name"&gt;
+        &lt;text/&gt;
+      &lt;/attribute&gt;
+      &lt;attribute name="email"&gt;
+        &lt;text/&gt;
+      &lt;/attribute&gt;
+    &lt;/interleave&gt;
+  &lt;/define&gt;
+
+&lt;/grammar&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>was wiederum dasselbe ist wie</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;grammar xmlns="http://relaxng.org/ns/structure/1.0"&gt;
+
+  &lt;start&gt;
+    &lt;element name="addressBook"&gt;
+      &lt;zeroOrMore&gt;
+        &lt;element name="card"&gt;
+          &lt;ref name="card.attlist"/&gt;
+        &lt;/element&gt;
+      &lt;/zeroOrMore&gt;
+    &lt;/element&gt;
+  &lt;/start&gt;
+
+  &lt;define name="card.attlist"&gt;
+    &lt;group&gt;
+      &lt;attribute name="name"&gt;
+        &lt;text/&gt;
+      &lt;/attribute&gt;
+      &lt;attribute name="email"&gt;
+        &lt;text/&gt;
+      &lt;/attribute&gt;
+    &lt;/group&gt;
+  &lt;/define&gt;
+
+&lt;/grammar&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>weil die Kombination von Attributen per Interleave denselben Effekt hat wie die Kombination in einer Gruppe.</p>
+</div>
+<div class="paragraph">
+<p>Es gibt noch ein paar beachtenswerte Regeln bei Mehrfachdefinitionen:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Alle Vorkommen einer Definition müssen denselben Wert bei <code>combine</code> haben.</p>
+</li>
+<li>
+<p>Bei einer Definition darf das Attribut <code>combine</code> weggelassen werden. Es wird dann der Wert der anderen Definitionen benutzt.</p>
+</li>
+<li>
+<p>Die Reihenfolge der Definitionen ist irrelevant.</p>
+</li>
+<li>
+<p>Mehrere Startelemente (<code>start</code>) werden wie Definitionen behandelt und können kombiniert werden.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 0.1<br>
-Last updated 2017-08-02 15:54:45 CEST
+Last updated 2017-08-03 09:08:59 CEST
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/github.min.css">

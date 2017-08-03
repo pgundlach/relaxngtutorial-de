@@ -1,0 +1,148 @@
+// https://creativecommons.org/licenses/by-sa/3.0/deed.de
+== Mehrfachdefinitionen (combine ) ==
+
+Ein Schema kann mehrere Definitionen (`define`) mit demselben Namen enthalten.
+Dann muss allerdings beschrieben werden, was passiert, wenn mehrere Definitionen zu einer zusammengeführt werden.
+
+TIP: Warum sollte man mehrere Definitionen mit demselben Namen haben? Das spielt dann eine wichtige Rolle, wenn man mehrere Schemadateien hat und diese kombinieren will. Mehr dazu im nächsten Abschnitt.
+
+
+++++
+<code class="sidebar">
+combine
+</code>
+++++
+[source, xml]
+-------------------------------------------------------------------------------
+<define name="inline" combine="choice">
+  <element name="bold">
+    <ref name="inline"/>
+  </element>
+</define>
+
+<define name="inline" combine="choice">
+  <element name="italic">
+    <ref name="inline"/>
+  </element>
+</define>
+-------------------------------------------------------------------------------
+
+ist dasselbe wie
+
+[source, xml]
+-------------------------------------------------------------------------------
+<define name="inline">
+  <choice>
+    <element name="bold">
+      <ref name="inline"/>
+    </element>
+    <element name="italic">
+      <ref name="inline"/>
+    </element>
+  </choice>
+</define>
+-------------------------------------------------------------------------------
+
+
+Für Attribute wird in der Regel `combine="interleave"` benutzt:
+
+[source, xml]
+-------------------------------------------------------------------------------
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+
+  <start>
+    <element name="addressBook">
+      <zeroOrMore>
+        <element name="card">
+          <ref name="card.attlist"/>
+        </element>
+      </zeroOrMore>
+    </element>
+  </start>
+
+  <define name="card.attlist" combine="interleave">
+    <attribute name="name">
+      <text/>
+    </attribute>
+  </define>
+
+  <define name="card.attlist" combine="interleave">
+    <attribute name="email">
+      <text/>
+    </attribute>
+  </define>
+
+</grammar>
+-------------------------------------------------------------------------------
+
+ist dasselbe wie
+
+[source, xml]
+-------------------------------------------------------------------------------
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+
+  <start>
+    <element name="addressBook">
+      <zeroOrMore>
+        <element name="card">
+          <ref name="card.attlist"/>
+        </element>
+      </zeroOrMore>
+    </element>
+  </start>
+
+  <define name="card.attlist">
+    <interleave>
+      <attribute name="name">
+        <text/>
+      </attribute>
+      <attribute name="email">
+        <text/>
+      </attribute>
+    </interleave>
+  </define>
+
+</grammar>
+-------------------------------------------------------------------------------
+
+was wiederum dasselbe ist wie
+
+[source, xml]
+-------------------------------------------------------------------------------
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+
+  <start>
+    <element name="addressBook">
+      <zeroOrMore>
+        <element name="card">
+          <ref name="card.attlist"/>
+        </element>
+      </zeroOrMore>
+    </element>
+  </start>
+
+  <define name="card.attlist">
+    <group>
+      <attribute name="name">
+        <text/>
+      </attribute>
+      <attribute name="email">
+        <text/>
+      </attribute>
+    </group>
+  </define>
+
+</grammar>
+-------------------------------------------------------------------------------
+
+weil die Kombination von Attributen per Interleave denselben Effekt hat wie die Kombination in einer Gruppe.
+
+Es gibt noch ein paar beachtenswerte Regeln bei Mehrfachdefinitionen:
+
+* Alle Vorkommen einer Definition müssen denselben Wert bei `combine` haben.
+* Bei einer Definition darf das Attribut `combine` weggelassen werden. Es wird dann der Wert der anderen Definitionen benutzt.
+* Die Reihenfolge der Definitionen ist irrelevant.
+* Mehrere Startelemente (`start`) werden wie Definitionen behandelt und können kombiniert werden.
+
+// Ende der Datei
+

@@ -1,0 +1,110 @@
+// https://creativecommons.org/licenses/by-sa/3.0/deed.de
+== Verschachteln von Elementen (interleave) ==
+
+Das Interleave-Muster erlaubt es,  Kindelemente in beliebiger Reihenfolge auftreten zu lassen.
+Im folgenden Beispiel können die Kindelemente von `card` in der Reihenfolge `email` und dann `name` oder andersrum auftreten.
+
+
+++++
+<code class="sidebar">
+interleave
+</code>
+++++
+[source, xml]
+-------------------------------------------------------------------------------
+<element name="addressBook">
+  <zeroOrMore>
+    <element name="card">
+      <interleave>
+    	 <element name="name">
+    	   <text/>
+    	 </element>
+    	 <element name="email">
+    	   <text/>
+    	 </element>
+      </interleave>
+    </element>
+  </zeroOrMore>
+</element>
+-------------------------------------------------------------------------------
+
+Mit Interleave sind aber weitaus mächtigere Konstrukte möglich.
+Als Beispiel dient der Kopf einer HTML-Seite (Elementname `head`).
+In dem Kopf sind verschiedene Regeln zu beachten:
+
+* Es ist ein Vorkommen der Elemente `title` und `base` erlaubt, letzteres ist jedoch optional.
+* Die Elemente `style`, `script`, `link` und `meta` dürfen mehrfach vorkommen, sind aber auch optional.
+* Die Reihenfolge der Elemente ist beliebig.
+
+Unter der Annahme, dass es für die `<ref name="...">` passende Definitionen gibt, kann man die Regel für den HTML-Kopf mit dem folgenden Muster beschreiben:
+
+[source, xml]
+-------------------------------------------------------------------------------
+<define name="head">
+  <element name="head">
+    <interleave>
+      <ref name="title"/>
+      <optional>
+        <ref name="base"/>
+      </optional>
+      <zeroOrMore>
+        <ref name="style"/>
+      </zeroOrMore>
+      <zeroOrMore>
+        <ref name="script"/>
+      </zeroOrMore>
+      <zeroOrMore>
+        <ref name="link"/>
+      </zeroOrMore>
+      <zeroOrMore>
+        <ref name="meta"/>
+      </zeroOrMore>
+    </interleave>
+  </element>
+</define>
+-------------------------------------------------------------------------------
+
+Hier ist eine Eigenschaft zu erwähnen, die vielleicht nicht unbedingt intuitiv ist.
+Das Muster oben erlaubt die folgende XML-Datei:
+
+
+[source, xml]
+-------------------------------------------------------------------------------
+<head>
+  <meta  ... />
+  <title ... />
+  <meta  ... />
+</head>
+-------------------------------------------------------------------------------
+
+Man könnte vermuten, dass die `meta`-Elemente hintereinander stehen müssen, weil sie durch `zeroOrMore` gekennzeichnet sind.
+
+
+[discrete]
+=== Gemischter Inhalt (mixed content) ===
+
+Für einen Sonderfall des Interleave-Musters gibt es ein extra Element. Wenn ein Muster p auch Text beinhalten darf (mixed content), dann kann man
+
+[source, xml]
+-------------------------------------------------------------------------------
+<interleave> <text/> p </interleave>
+-------------------------------------------------------------------------------
+
+
+durch
+
+++++
+<code class="sidebar">
+mixed
+</code>
+++++
+[source, xml]
+-------------------------------------------------------------------------------
+<mixed> p </mixed>
+-------------------------------------------------------------------------------
+
+abkürzen.
+
+
+
+// Ende der Datei

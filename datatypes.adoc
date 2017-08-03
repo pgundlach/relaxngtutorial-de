@@ -1,3 +1,4 @@
+// https://creativecommons.org/licenses/by-sa/3.0/deed.de
 :builtindatatypes: https://www.w3.org/TR/xmlschema-2/#built-in-datatypes
 
 == Datentypen ==
@@ -6,7 +7,7 @@ In den letzten Beispielen gab es als einzigen Datentyp »text«, der alles beinh
 Manchmal ist es jedoch wünschenswert, nur bestimmte Werte zuzulassen, beispielsweise für das Geburtsjahr.
 Der Anwender soll genau vier Ziffern in das Feld schreiben dürfen, die ggf. noch innerhalb eines Wertebereiches liegen.
 
-RelaxNG selber kennt keine Datentypen, kann aber »externe« Datentypen einbinden.
+RELAX NG selber kennt keine Datentypen, kann aber »externe« Datentypen einbinden.
 Die wohl am häufigsten benutzte Sammlung an Datentypen hat den URI `\http://www.w3.org/2001/XMLSchema-datatypes`. Dieser Identifier wird im Attribut `datatypeLibrary` angegeben, das man am einfachsten am Wurzelelement mit angibt:
 
 
@@ -78,7 +79,7 @@ Datentypen können Parameter (Einschränkungen) haben. So sind für den Datentyp
 * `maxLength`
 * `pattern`
 
-Die beiden Parameter `enumeration` und `whiteSpace` sind laut den http://relaxng.org/xsd-20010907.html[Richtlinien für Datentypen in RelaxNG] nicht erlaubt.
+Die beiden Parameter `enumeration` und `whiteSpace` sind laut den http://relaxng.org/xsd-20010907.html[Richtlinien für Datentypen in RELAX NG] nicht erlaubt.
 
 Diese Parameter werden als Kindelement von `data` angegeben
 

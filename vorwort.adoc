@@ -3,8 +3,7 @@
 [discrete]
 == Vorwort ==
 
-[.foo]
-RelaxNG (gesprochen: relaxing) ist eine Schemasprache für XML, mit der man den Aufbau eines XML-Dokuments beschreiben kann.
+RELAX NG (gesprochen: relaxing) ist eine Schemasprache für XML, mit der man den Aufbau eines XML-Dokuments beschreiben kann.
 Hat man ein solches Schema erstellt, dann kann man leicht überprüfen, ob ein XML-Dokument den Anforderungen entspricht.
 Beispielsweise kann man in einem Schema festlegen, dass ein Adressbucheintrag genau einen Vornamen und einen Nachnamen enthalten muss.
 Das hat zwei Vorteile:
@@ -12,11 +11,11 @@ Das hat zwei Vorteile:
 . Der Anwender kann prüfen, ob das XML-Dokument den Anforderungen entspricht (Validierung).
 . Mit einem passenden Editor kann sich per Autovervollständigung Vorschläge für die Eingabe geben lassen und spart Tipparbeit und vermeidet Fehler.
 
-Die Schemasprache RelaxNG eignet sich sehr gut für diese Aufgabe und wird von vielen XML-Editoren unterstützt.
-RelaxNG kommt in zwei Arten daher, die funktional identisch sind.
+Die Schemasprache RELAX NG eignet sich sehr gut für diese Aufgabe und wird von vielen XML-Editoren unterstützt.
+RELAX NG kommt in zwei Arten daher, die funktional identisch sind.
 Einmal als »kompakte Syntax« und einmal als »XML-Syntax«. In diesem Dokument wird nur die XML-Syntax beschrieben.
 
-Dieses Tutorial lehnt sich an das »offizielle« Tutorial an, das auf der http://relaxng.org/tutorial-20030326.html[RelaxNG-Webseite zur Verfügung steht].
+Dieses Tutorial lehnt sich an das »offizielle« Tutorial an, das auf der http://relaxng.org/tutorial-20030326.html[RELAX NG-Webseite zur Verfügung steht].
 Es ist keine direkte Übersetzung.
 Hier und da wurden Änderungen vorgenommen, um den Inhalt leichter zu vermitteln.
 Hinweise auf nicht mehr übliche Techniken wurden entfernt (TREX, DTD, ...)
