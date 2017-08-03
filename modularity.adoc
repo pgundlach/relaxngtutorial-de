@@ -278,5 +278,64 @@ Nun kann man die Auswahlliste in einer eigenen Datei erweitern:
 </grammar>
 -------------------------------------------------------------------------------
 
+=== parentRef ===
+
+Hat man zwei Schemadateien, kann man aus der »inneren« Datei auf Definitionen in der äußeren mit `parentRef` zugreifen.
+
+
+Dies hier ist die äußere Datei `addressbook.rng`
+
+
+[source, xml]
+-------------------------------------------------------------------------------
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+  <start>
+    <ref name="addressBook" />
+  </start>
+
+  <define name="addressBook">
+    <element name="addressBook">
+      <externalRef href="card.rng"/>
+    </element>
+  </define>
+
+  <define name="card.attributes">
+    <attribute name="givenName"/>
+    <attribute name="familyName"/>
+  </define>
+
+</grammar>
+-------------------------------------------------------------------------------
+
+die bindet eine Datei `card.rng` ein:
+
+++++
+<code class="sidebar">
+parentRef
+</code>
+++++
+[source, xml]
+-------------------------------------------------------------------------------
+<grammar  xmlns="http://relaxng.org/ns/structure/1.0">
+  <start>
+    <ref name="card" />
+  </start>
+  <define name="card">
+    <element name="card">
+      <parentRef name="card.attributes"/>
+      <empty/>
+    </element>
+  </define>
+</grammar>
+-------------------------------------------------------------------------------
+
+In der Datei `card.rng` wird Bezug auf ein Muster genommen, das in der Datei `addressbook.rng` definiert sein muss.
+Ohne dieses Muster ist das Schema ungültig.
+
+
+
+
+
+
 // Ende der Datei
 
