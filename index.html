@@ -35,6 +35,7 @@
 <li><a href="#_mehrere_schemadateien">11. Mehrere Schemadateien</a></li>
 <li><a href="#_namensräume_namespaces">12. Namensräume (Namespaces)</a></li>
 <li><a href="#_namensklassen">13. Namensklassen</a></li>
+<li><a href="#_anmerkungen_annotations">14. Anmerkungen (Annotations)</a></li>
 </ul>
 </div>
 </div>
@@ -1863,11 +1864,79 @@ Das ist mehrdeutig und daher nicht erlaubt.</p>
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_anmerkungen_annotations">14. Anmerkungen (Annotations)</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>RELAX NG hat die praktische Eigenschaft, Elemente und Attribute aus »fremden« Namensräumen einfach zu ignorieren.
+Das kann man benutzen, um eigene Elemente hinzuzufügen, z.B. zur Dokumentation.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;element name="addressBook"
+  xmlns="http://relaxng.org/ns/structure/1.0"
+  xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"&gt;
+  &lt;zeroOrMore&gt;
+    &lt;element name="card"&gt;
+      &lt;a:documentation&gt;Information about a single email address.&lt;/a:documentation&gt;
+      &lt;element name="name"&gt;
+        &lt;text/&gt;
+      &lt;/element&gt;
+      &lt;element name="email"&gt;
+        &lt;text/&gt;
+      &lt;/element&gt;
+    &lt;/element&gt;
+  &lt;/zeroOrMore&gt;
+&lt;/element&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Wird der oben genannte Namensraum für die Dokumentation benutzt, so wird dies in manchen Editoren als Tooltip gezeigt.
+Hier ist ein Beispiel für das Schema im oXygen XML-Editor</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="oxygen.png" alt="screenshot aus dem oXygen Editor mit tooltip">
+</div>
+</div>
+<div class="paragraph">
+<p>RELAX NG hat auch ein <code>div</code>-Element, das keinerlei Bedeutung hat.
+Es dient lediglich zur logischen Trennung für den Anwender und hat auf das Anwenden der Regeln keine Auswirkung.
+Man könnte mit einem Namensraum selber eine Trennung vornehmen um ein Schema zu modularisieren.</p>
+</div>
+<code class="sidebar">
+div
+</code>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;grammar xmlns:m="http://www.example.com/module"&gt;
+
+  &lt;div m:name="inline"&gt;
+
+    &lt;define name="code"&gt; pattern &lt;/define&gt;
+    &lt;define name="em"&gt; pattern &lt;/define&gt;
+    &lt;define name="var"&gt; pattern &lt;/define&gt;
+
+  &lt;/div&gt;
+
+  &lt;div m:name="block"&gt;
+
+    &lt;define name="p"&gt; pattern &lt;/define&gt;
+    &lt;define name="ul"&gt; pattern &lt;/define&gt;
+    &lt;define name="ol"&gt; pattern &lt;/define&gt;
+
+  &lt;/div&gt;
+
+&lt;/grammar&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 0.1<br>
-Last updated 2017-08-03 13:00:14 CEST
+Last updated 2017-08-03 13:19:40 CEST
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/github.min.css">

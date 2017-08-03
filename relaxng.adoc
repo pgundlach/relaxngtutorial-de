@@ -30,4 +30,5 @@ include::kombinationen.adoc[]
 include::modularity.adoc[]
 include::namespaces.adoc[]
 include::nameclasses.adoc[]
+include::annotations.adoc[]
 
