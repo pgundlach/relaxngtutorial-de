@@ -29,6 +29,9 @@ Dieses Dokument unterliegt der https://creativecommons.org/licenses/by-sa/3.0/de
 ifdef::ebook-format[]
 Den Autor kann man unter gundlach@speedata.de kontaktieren.
 endif::[]
+ifndef::ebook-format[]
+Dieses Dokument kann man auch als EPUB https://github.com/speedata/relaxngtutorial-de/raw/master/relaxng.epub[herunterladen].
+endif::[]
 
 
 // Ende der Datei
