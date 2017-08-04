@@ -1,5 +1,5 @@
 
-== Optionale Elemente und Attribute ==
+= Optionale Elemente und Attribute =
 Möchte man ein Element als optional markieren, macht man das wie folgt:
 
 ++++

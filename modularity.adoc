@@ -1,5 +1,5 @@
 // https://creativecommons.org/licenses/by-sa/3.0/deed.de
-== Mehrere Schemadateien ==
+= Mehrere Schemadateien =
 
 Man kann anstelle einer Schemadatei mehrere verwenden.
 http://docbook.sourceforge.net/[DocBook] sei hier als Beispiel erwähnt:
@@ -11,7 +11,7 @@ Es gibt zwei Arten der Referenzierung: `externalRef` und `include`.
 Die erste Variante bietet sich an, wenn man kleinere Definitionen hat, die man aus verschiedenen Hauptdateien einbindet und die zweite Variante bietet sich in Situationen an wie im DocBook-Beispiel beschrieben.
 
 
-=== Referenz auf externe Muster ===
+== Referenz auf externe Muster ==
 
 Wenn wir eine einfache Datei haben (`card.rng`):
 
@@ -63,7 +63,7 @@ Man kann dieses Muster auch bei `choice` benutzen:
 
 Der Fantasie sind hier kaum Grenzen gesetzt. In der Praxis findet sich jedoch etwas häufiger der folgende Mechanismus:
 
-=== Zusammenführen von Schemadateien ===
+== Zusammenführen von Schemadateien ==
 
 Mit dem `include` Befehl lassen sich Schemadateien zusammenführen.
 
@@ -168,7 +168,7 @@ Damit ist nun ein optionales Attribut `note` erlaubt:
 -------------------------------------------------------------------------------
 
 
-=== Ersetzen von Definitionen ===
+== Ersetzen von Definitionen ==
 
 
 Schreibt man die neuen Definitionen _in_ das `include`-Element, so werden die alten Definitionen überschrieben. Das ist ein Unterschied zu der vorherigen Benutzung von `include`.
@@ -204,7 +204,7 @@ Eine gültige XML-Datei hat nun die Form:
 Tipp: Die `include`-Anweisung darf auch das `start`-Element enthalten, das dann das `start`-Element der eingebundenen Datei überschreibt.
 
 
-=== Platzhalter ===
+== Platzhalter ==
 
 
 Es gibt ein Element `notAllowed`, das als Platzhalter für Erweiterungen dienen kann.
@@ -278,7 +278,7 @@ Nun kann man die Auswahlliste in einer eigenen Datei erweitern:
 </grammar>
 -------------------------------------------------------------------------------
 
-=== parentRef ===
+== parentRef ==
 
 Hat man zwei Schemadateien, kann man aus der »inneren« Datei auf Definitionen in der äußeren mit `parentRef` zugreifen.
 

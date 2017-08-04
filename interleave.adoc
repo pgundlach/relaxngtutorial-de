@@ -1,5 +1,5 @@
 // https://creativecommons.org/licenses/by-sa/3.0/deed.de
-== Verschachteln von Elementen (interleave) ==
+= Verschachteln von Elementen (interleave) =
 
 Das Interleave-Muster erlaubt es,  Kindelemente in beliebiger Reihenfolge auftreten zu lassen.
 Im folgenden Beispiel können die Kindelemente von `card` in der Reihenfolge `email` und dann `name` oder andersrum auftreten.
@@ -81,7 +81,7 @@ Man könnte vermuten, dass die `meta`-Elemente hintereinander stehen müssen, we
 
 
 [discrete]
-=== Gemischter Inhalt (mixed content) ===
+== Gemischter Inhalt (mixed content) ==
 
 Für einen Sonderfall des Interleave-Musters gibt es ein extra Element. Wenn ein Muster p auch Text beinhalten darf (mixed content), dann kann man
 

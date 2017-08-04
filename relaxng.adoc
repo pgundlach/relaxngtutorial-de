@@ -2,19 +2,31 @@
 = RELAX NG Tutorial
 Patrick Gundlach <gundlach@speedata.de>
 v1.0, 2017-08-03
+:showtitle:
+:doctype: book
 :sectnums:
 :toclevels: 1
 :lang: de
 :toc:
 :figure-caption: Abbildung
 :toc-title: Inhalt
-:docinfo: private
 :icons: font
 :stylesheet: relaxng.css
 :stylesdir: css
 :subs: none
+ifdef::ebook-format[]
+:source-highlighter: pygments
+:pygments-style: trac
+:front-cover-image: cover.png
+:epub3-stylesdir: epub-style
+endif::[]
+ifndef::ebook-format[]
 :source-highlighter: highlightjs
+endif::[]
+
 :linkcss:
+ifndef::ebook-format[:leveloffset: 1]
+
 
 
 include::vorwort.adoc[]

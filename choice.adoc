@@ -1,5 +1,5 @@
 // https://creativecommons.org/licenses/by-sa/3.0/deed.de
-== Auswahl (Choice) ==
+= Auswahl (Choice) =
 
 Mit dem Element `choice` kann man ein »Entweder/Oder«-Konstrukt erzeugen.
 Wenn das Adressbuch beispielsweise entweder das Element `name` oder die beiden Elemente `givenName` und `familyName` haben soll, nutzt man `choice`. Die gewünschte XML-Datei ist folgende:
@@ -23,7 +23,7 @@ Dazu passt diese Schemadatei.
 
 ++++
 <code class="sidebar">
-choice<br>
+choice<br />
 group
 </code>
 ++++

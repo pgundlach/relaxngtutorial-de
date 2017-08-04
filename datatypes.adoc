@@ -1,7 +1,7 @@
 // https://creativecommons.org/licenses/by-sa/3.0/deed.de
 :builtindatatypes: https://www.w3.org/TR/xmlschema-2/#built-in-datatypes
 
-== Datentypen ==
+= Datentypen =
 
 In den letzten Beispielen gab es als einzigen Datentyp »text«, der alles beinhaltet.
 Manchmal ist es jedoch wünschenswert, nur bestimmte Werte zuzulassen, beispielsweise für das Geburtsjahr.

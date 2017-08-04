@@ -1,6 +1,6 @@
 // https://creativecommons.org/licenses/by-sa/3.0/deed.de
 
-== Los geht's ==
+= Los geht's =
 
 
 Als Beispiel für das Tutorial (bzw. die ersten Schritte) soll folgende XML-Datei dienen, für die ein Schema erstellt werden soll (speichern z.B. unter `source.xml`):
@@ -25,8 +25,8 @@ Das dazugehörige Schema könnte wie folgt aussehen (speichern z.B. unter `schem
 
 ++++
 <code class="sidebar">
-element<br>
-zeroOrMore<br>
+element<br />
+zeroOrMore<br />
 text
 </code>
 ++++
@@ -49,7 +49,14 @@ text
 
 // NOTE: Es ist schwierig ein Schema aus einer XML-Datei zu erzeugen, wenn nicht genügend Informationen über die Datei bekannt sind. Ist das Feld `email` zwingend notwendig? Dürfen noch weitere Elemente hinzukommen? Ohne die Antworten zu kennen, ist das dazugehörige Schema möglicherweise unvollständig. Das soll im Tutorial aber nicht weiter stören, da wir uns nur die Schemasprache anschauen.
 
-NOTE: Die hier aufgezeigte Form des Schemas (mit dem Wurzelelement `element`) ist in der Praxis eher unüblich. RELAX NG Schemadateien haben als Wurzelelement  oft `grammar`, das wesentlich flexibler ist. Das wird in Kapitel <<benanntemuster>> eingeführt.
+NOTE: Die hier aufgezeigte Form des Schemas (mit dem Wurzelelement `element`) ist in der Praxis eher unüblich. RELAX NG Schemadateien haben als Wurzelelement  oft `grammar`, das wesentlich flexibler ist. Das wird in Kapitel
+ifdef::ebook-format[]
+<<benanntemuster#benanntemuster>>
+endif::[]
+ifndef::ebook-format[]
+<<benanntemuster>>
+endif::[]
+eingeführt.
 
 
 Die Validierung des Dokuments wird meist in einem XML-Editor durchgeführt (z.B. https://www.oxygenxml.com/[oXygen XML]), in der Regel auch während der Eingabe.
@@ -169,7 +176,7 @@ ist dasselbe wie
 
 
 [discrete]
-=== Namensraum des Schemas ===
+== Namensraum des Schemas ==
 
 Der Namensraum von RELAX NG ist `\http://relaxng.org/ns/structure/1.0`. Mit dem »Attribut«
 

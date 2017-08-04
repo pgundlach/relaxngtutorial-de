@@ -1,7 +1,7 @@
 // https://creativecommons.org/licenses/by-sa/3.0/deed.de
 
-[discrete]
-== Vorwort ==
+
+= Vorwort =
 
 RELAX NG ist eine Schemasprache für XML, mit der man den Aufbau eines XML-Dokuments beschreiben kann.
 Hat man ein solches Schema erstellt, dann kann man leicht überprüfen, ob ein XML-Dokument den Anforderungen entspricht.
@@ -21,9 +21,15 @@ Hier und da wurden Änderungen vorgenommen, um den Inhalt leichter zu vermitteln
 Hinweise auf nicht mehr übliche Techniken wurden entfernt (TREX, DTD, ...)
 
 
+ifndef::ebook-format[]
 TIP: Neu eingeführte Elemente werden im linken Rand dargestellt. Damit kannst du das Tutorial auch »überfliegen«, wenn du nach einem bestimmten Befehl suchst. Das funktioniert leider nur, wenn der Bildschirm groß genug ist...
+endif::[]
 
 Dieses Dokument unterliegt der https://creativecommons.org/licenses/by-sa/3.0/deed.de[CC-By-SA Lizenz]. Der Quelltext (Asciidoctor) des Dokuments ist auf https://github.com/speedata/relaxngtutorial-de[Github] zu finden.
+ifdef::ebook-format[]
+Den Autor kann man unter gundlach@speedata.de kontaktieren.
+endif::[]
+
 
 // Ende der Datei
 

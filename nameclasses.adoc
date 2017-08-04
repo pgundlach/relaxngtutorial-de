@@ -1,5 +1,5 @@
 // https://creativecommons.org/licenses/by-sa/3.0/deed.de
-== Namensklassen ==
+= Namensklassen =
 
 Ein etwas esoterisches Kapitel.
 Zwar durchaus praxisrelevant, aber man muss manchmal lange auf die Konstrukte schauen, um sie zu verstehen.
@@ -37,7 +37,7 @@ Es gibt noch weitere Klassen, die hier als Beispiele aufgeführt werden sollen:
 
 ++++
 <code class="sidebar">
-except<br>
+except<br />
 name
 </code>
 ++++

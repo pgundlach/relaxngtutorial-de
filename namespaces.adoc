@@ -1,5 +1,5 @@
 // https://creativecommons.org/licenses/by-sa/3.0/deed.de
-== Namensräume (Namespaces) ==
+= Namensräume (Namespaces) =
 
 
 RELAX NG kann mit XML-Namensräumen umgehen.
@@ -10,7 +10,7 @@ Namensräume sind fester Bestandteil einer XML-Datei und daher muss das Schema d
 
 Für diejenigen, die sich nicht so sicher sind, wie die XML-Namensräume funktionieren, gibt es hier eine Auffrischung:
 
-=== Auffrischung: XML-Namensräume ===
+== Auffrischung: XML-Namensräume ==
 
 Ein Elementname oder ein Attributname besteht immer aus einem lokalen Namen und einem ggf. leerem  Namensraum.
 Der Namensraum hat zur Kennung einen (fast beliebigen) Präfix und ist ein sogenannter »uniform resource identifier« (URI).
@@ -72,7 +72,7 @@ Im letzten Fall hat das Elternelement _nicht_ den Namensraum `\http://example.co
 Mit diesem Exkurs sollte die Anwendung von RELAX NG-Namensräumen kein Problem darstellen.
 
 
-=== Benutzung des Attributs `ns` ===
+== Benutzung des Attributs `ns` ==
 
 In dem Attribut `ns` kann der erwartete Namensraum einfach angegeben werden:
 
@@ -155,7 +155,7 @@ Das Element `addressBook` wird im Namensraum `http://example.com` erwartet.
 Nochmals der Hinweis: der Eintrag `xmlns="http://relaxng.org/ns/structure/1.0"` ist nur dafür da, die Schemadatei als RELAX NG Datei zu kennzeichnen und hat nichts mit dem zu überprüfenden XML-Dokument zu tun.
 
 
-=== Namensräume in Attributen ===
+== Namensräume in Attributen ==
 
 Eine Besonderheit bei Namensräumen in Attributen ist meiner Meinung nach eine Schwachstelle der Definition von XML-Namensräumen.
 Die Attribute eines Elements befinden sich _nicht_ in demselben Namensraum des umschließenden Elements.
@@ -201,7 +201,7 @@ ist identisch zu:
 
 
 
-=== Namensräume mit qualifizierten Namen ===
+== Namensräume mit qualifizierten Namen ==
 
 Anstelle des Attributs `ns` wie oben beschrieben können die Namensräume auch direkt angegeben werden:
 

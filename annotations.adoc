@@ -1,4 +1,4 @@
-== Anmerkungen (Annotations) ==
+= Anmerkungen (Annotations) =
 
 RELAX NG hat die praktische Eigenschaft, Elemente und Attribute aus »fremden« Namensräumen einfach zu ignorieren.
 Das kann man benutzen, um eigene Elemente hinzuzufügen, z.B. zur Dokumentation.

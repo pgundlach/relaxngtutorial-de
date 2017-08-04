@@ -1,5 +1,5 @@
 // https://creativecommons.org/licenses/by-sa/3.0/deed.de
-== Listen ==
+= Listen =
 
 Dieses Muster passt auf eine durch Leerzeichen (Whitespace) separierte Liste von Werten.
 Ein einfaches Beispiel erklärt das wohl am besten:

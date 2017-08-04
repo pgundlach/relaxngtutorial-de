@@ -1,5 +1,5 @@
 // https://creativecommons.org/licenses/by-sa/3.0/deed.de
-== Mehrfachdefinitionen (combine ) ==
+= Mehrfachdefinitionen (combine ) =
 
 Ein Schema kann mehrere Definitionen (`define`) mit demselben Namen enthalten.
 Dann muss allerdings beschrieben werden, was passiert, wenn mehrere Definitionen zu einer zusammengeführt werden.

@@ -1,7 +1,7 @@
 // https://creativecommons.org/licenses/by-sa/3.0/deed.de
 
 
-== Vorbelegte Werte ==
+= Vorbelegte Werte =
 
 Manchmal möchte man Werte von Elementen oder Attributen auf eine begrenzte Anzahl von Auswahlmöglichkeiten einschränken.
 Dafür gibt es das Muster `value`:
