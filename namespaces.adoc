@@ -133,7 +133,7 @@ aber nicht auf folgende:
 <e:foo xmlns:e="http://example.com"/>
 -------------------------------------------------------------------------------
 
-Das Attribut `ns` muss nicht an jedem Element angegeben werden. Das Schema sucht nach dem nächsten Elternelement, das ein solches Attribut hat. So kann man einen Namensraum, der für die ganze XML-Datei gilt, auch am Wurzelelement `grammer` angeben:
+Das Attribut `ns` muss nicht an jedem Element angegeben werden. Das Schema sucht nach dem nächsten Elternelement, das ein solches Attribut hat. So kann man einen Namensraum, der für die ganze XML-Datei gilt, auch am Wurzelelement `grammar` angeben:
 
 
 [source, xml]

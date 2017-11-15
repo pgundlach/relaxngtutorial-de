@@ -28,7 +28,7 @@ Das Grundgerüst ist nun folgendes:
 
 ++++
 <code class="sidebar">
-grammer<br />
+grammar<br />
 start
 </code>
 ++++

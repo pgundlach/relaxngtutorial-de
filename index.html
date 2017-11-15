@@ -33,7 +33,7 @@
 <li><a href="#_verschachteln_von_elementen_interleave">9. Verschachteln von Elementen (interleave)</a></li>
 <li><a href="#_mehrfachdefinitionen_combine">10. Mehrfachdefinitionen (combine )</a></li>
 <li><a href="#_mehrere_schemadateien">11. Mehrere Schemadateien</a></li>
-<li><a href="#_namensräume_namespaces">12. Namensräume (Namespaces)</a></li>
+<li><a href="#namespaces">12. Namensräume (Namespaces)</a></li>
 <li><a href="#_namensklassen">13. Namensklassen</a></li>
 <li><a href="#_anmerkungen_annotations">14. Anmerkungen (Annotations)</a></li>
 </ul>
@@ -526,7 +526,7 @@ define
 Das Grundgerüst ist nun folgendes:</p>
 </div>
 <code class="sidebar">
-grammer<br />
+grammar<br />
 start
 </code>
 <div class="listingblock">
@@ -1503,7 +1503,7 @@ Ohne dieses Muster ist das Schema ungültig.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_namensräume_namespaces">12. Namensräume (Namespaces)</h2>
+<h2 id="namespaces">12. Namensräume (Namespaces)</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>RELAX NG kann mit XML-Namensräumen umgehen.
@@ -1650,7 +1650,7 @@ ns
 </div>
 </div>
 <div class="paragraph">
-<p>Das Attribut <code>ns</code> muss nicht an jedem Element angegeben werden. Das Schema sucht nach dem nächsten Elternelement, das ein solches Attribut hat. So kann man einen Namensraum, der für die ganze XML-Datei gilt, auch am Wurzelelement <code>grammer</code> angeben:</p>
+<p>Das Attribut <code>ns</code> muss nicht an jedem Element angegeben werden. Das Schema sucht nach dem nächsten Elternelement, das ein solches Attribut hat. So kann man einen Namensraum, der für die ganze XML-Datei gilt, auch am Wurzelelement <code>grammar</code> angeben:</p>
 </div>
 <div class="listingblock">
 <div class="content">

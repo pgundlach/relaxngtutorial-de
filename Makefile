@@ -5,3 +5,7 @@ html:
 
 epub:
 	asciidoctor-epub3 relaxng.adoc
+
+
+live:
+	livereload
